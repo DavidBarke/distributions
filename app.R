@@ -1,6 +1,18 @@
 library(shiny)
 library(sortable)
 
+source("init/source_directory.R")
+source_directory("modules")
+
+sass::sass(
+    sass::sass_file("www/scss/styles.scss"),
+    output = "www/css/styles.css",
+    options = sass::sass_options(
+        output_style = "compressed"
+    ),
+    cache = FALSE
+)
+
 ui <- htmltools::tagList(
     htmltools::includeCSS("www/css/styles.css"),
     bs4Dash::bs4DashPage(
@@ -14,22 +26,21 @@ ui <- htmltools::tagList(
             shiny::fluidRow(
                 shiny::column(
                     width = 3,
-                    htmltools::div(
+                    drop_zone(
                         id = "drag_from",
-                        class = "outline panel-body",
-                        purrr::map(LETTERS[1:5], ~ {
-                            htmltools::div(
-                                shiny::icon("home"),
-                                .
+                        label = "Inactive Distributions",
+                        purrr::map(1:10, ~ {
+                            distribution_box_ui(
+                                id = "test_box"
                             )
                         })
                     )
                 ),
                 shiny::column(
                     width = 3,
-                    htmltools::div(
+                    drop_zone(
                         id = "drag_to",
-                        class = "outline panel-body"
+                        label = "Active Distributions"
                     )
                 ),
                 shiny::column(
@@ -61,6 +72,13 @@ ui <- htmltools::tagList(
 )
 
 server <- function(input, output) {
+
+    .values <- new.env()
+
+    distribution_box_server(
+        id = "test_box",
+        .values = .values
+    )
 
 }
 

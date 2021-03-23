@@ -1,0 +1,78 @@
+/* Globals */
+
+$border-color: #ccc;
+
+/* Drag & Drop */
+
+.drop-zone {
+  border: 1px solid $border-color;
+  padding: 10px;
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+.drop-zone-header {
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.drop-zone-title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0;
+  text-align: center;
+}
+
+/* Color Input */
+
+.color-input input {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  vertical-align: top;
+}
+
+/* Flex */
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Small Card */
+
+$small-card-padding-hz: 15px;
+
+.small-card {
+
+  padding: 0;
+
+  .card-header {
+    padding-left: $small-card-padding-hz;
+    padding-right: $small-card-padding-hz;
+  }
+
+  .card-title {
+    width: 100%;
+  }
+
+  .card-title > .flex {
+    justify-content: space-between;
+  }
+
+  .card-body {
+    padding: 0 $small-card-padding-hz - 5px;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  .selectize-control {
+    margin: 5px {
+      bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+distributions <- function() {
+  c(
+    "Bernoulli" = "bernoulli",
+    "Beta" = "beta",
+    "Binomial" = "binomial",
+    "Burr" = "burr",
+    "Cauchy" = "cauchy",
+    "Chi-Square" = "chisq",
+    "Degenerate" = "degenerate",
+    "Exponential" = "exponential",
+    "F" = "f",
+    "Gamma" = "gamma",
+    "Geometric" = "geometric",
+    "Gumbel" = "gumbel",
+    "Hypergeometric" = "hypergeometric",
+    "Inverse Exponential" = "inverse_exponential",
+    "Inverse Gamma" = "inverse_gamma",
+    "Inverse Gaussian" = "inverse_gaussian",
+    "Logarithmic" = "logarithmic",
+    "Logistic" = "logistic",
+    "Multinomial" = "multinomial",
+    "Negative Binomial" = "negative_binomial",
+    "Normal" = "normal",
+    "Pareto" = "pareto",
+    "Poisson" = "poisson",
+    "Poisson Inverse Gaussian" = "poisson_inverse_gaussian",
+    "Student's t" = "student_t",
+    "Uniform" = "uniform",
+    "Weibull" = "weibull"
+  )
+}
