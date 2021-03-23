@@ -1,4 +1,4 @@
-color_input <- function(inputId, label = NULL, value = "#ff0000") {
+color_input <- function(inputId, label = NULL, value = "#fff") {
   htmltools::tagList(
     htmltools::singleton(
       htmltools::tags$script(

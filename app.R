@@ -13,6 +13,10 @@ sass::sass(
     cache = FALSE
 )
 
+size <- 20
+
+color_scale <- scales::col_numeric(palette(), c(1, size))
+
 ui <- htmltools::tagList(
     htmltools::includeCSS("www/css/styles.css"),
     bs4Dash::bs4DashPage(
@@ -29,9 +33,10 @@ ui <- htmltools::tagList(
                     drop_zone(
                         id = "drag_from",
                         label = "Inactive Distributions",
-                        purrr::map(1:10, ~ {
+                        purrr::map2(seq_len(size), color_scale(seq_len(size)), ~ {
                             distribution_box_ui(
-                                id = "test_box"
+                                id = paste0("test_box_", .x),
+                                color = .y
                             )
                         })
                     )
@@ -75,10 +80,12 @@ server <- function(input, output) {
 
     .values <- new.env()
 
-    distribution_box_server(
-        id = "test_box",
-        .values = .values
-    )
+    purrr::walk(seq_len(size), ~ {
+        distribution_box_server(
+            id = paste0("test_box_", .),
+            .values = .values
+        )
+    })
 
 }
 

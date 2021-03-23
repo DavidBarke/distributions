@@ -15,3 +15,20 @@ drop_zone <- function(..., id, label) {
     )
   )
 }
+
+distribution_param <- function(name, value) {
+  # paste would break rendering of greek letters
+  text <- htmltools::tagList(name, ":", value)
+
+  htmltools::div(
+    class = "distribution-param",
+    badge(text)
+  )
+}
+
+badge <- function(text) {
+  htmltools::span(
+    class = "badge",
+    text
+  )
+}

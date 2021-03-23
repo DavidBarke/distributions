@@ -9,6 +9,13 @@ $border-color: #ccc;
   padding: 10px;
   background-color: #eee;
   border-radius: 10px;
+  /* display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  flex-direction: column;
+  height: 100%;*/
 }
 
 .drop-zone-header {
@@ -24,13 +31,18 @@ $border-color: #ccc;
   text-align: center;
 }
 
+.drop-zone-body {
+  max-height: unquote("calc(100vh - 120px)");
+  overflow-y: auto;
+  overflow-x: clip;
+}
+
 /* Color Input */
 
 .color-input input {
   width: 25px;
   height: 25px;
   padding: 0;
-  vertical-align: top;
 }
 
 /* Flex */
@@ -38,23 +50,26 @@ $border-color: #ccc;
 .flex {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 /* Small Card */
 
-$small-card-padding-hz: 15px;
+$small-card-padding: 15px;
 
 .small-card {
 
   padding: 0;
 
   .card-header {
-    padding-left: $small-card-padding-hz;
-    padding-right: $small-card-padding-hz;
+    padding: $small-card-padding - 5px {
+      bottom: 0;
+    };
   }
 
   .card-title {
     width: 100%;
+    font-size: 1rem;
   }
 
   .card-title > .flex {
@@ -62,12 +77,15 @@ $small-card-padding-hz: 15px;
   }
 
   .card-body {
-    padding: 0 $small-card-padding-hz - 5px;
+    padding: $small-card-padding {
+      top: 0;
+    }
+
   }
 
   .form-group {
     margin-bottom: 0;
-    width: 100%;
+    max-width: 80%;
   }
 
   .selectize-control {
@@ -75,4 +93,29 @@ $small-card-padding-hz: 15px;
       bottom: 0;
     }
   }
+
+  .badge {
+    cursor: pointer;
+  }
+}
+
+/* Distribution Parameters */
+
+.distribution-param {
+  padding-right: 10px;
+}
+
+/* Badge */
+
+.badge {
+  display: inline !important;
+  padding: .3em .4em !important;
+  font-size: 75% !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+  border-radius: .25em !important;
+  background-color: $border-color;
 }

@@ -1,4 +1,4 @@
-distribution_box_ui <- function(id, label = "Distribution") {
+distribution_box_ui <- function(id, label = "Distribution", color = "#fff") {
   ns <- shiny::NS(id)
 
   box <- bs4Dash::box(
@@ -6,15 +6,19 @@ distribution_box_ui <- function(id, label = "Distribution") {
     collapsible = FALSE,
     title = htmltools::div(
       class = "flex",
-      label,
+      shiny::selectInput(
+        inputId = ns("distribution"),
+        label = NULL,
+        choices = distributions$choices
+      ),
       color_input(
-        inputId = ns("color")
+        inputId = ns("color"),
+        value = color
       )
     ),
-    shiny::selectInput(
-      inputId = ns("distribution"),
-      label = NULL,
-      choices = distributions$choices
+    shiny::uiOutput(
+      outputId = ns("params"),
+      class = "flex"
     )
   )
 
@@ -30,8 +34,15 @@ distribution_box_server <- function(id, .values) {
 
       ns <- session$ns
 
-      shiny::observeEvent(input$color, {
-        print(input$color)
+      output$params <- shiny::renderUI({
+        params <- distributions$params[[input$distribution]]
+
+        purrr::map(names(params), ~ {
+          distribution_param(
+            name = htmltools::HTML(.),
+            value = 1
+          )
+        })
       })
     }
   )

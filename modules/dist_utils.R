@@ -58,15 +58,15 @@ distributions$params <- list(
   bernoulli = c("p" = "prob"),
   beta = c(
     "Shape 1" = "shape1",
-    "Shape 2" = "shape2",
+    "Shape 2" = "shape2"
   ),
   binomial = c(
     "n" = "size",
     "p" = "prob"
   ),
   cauchy = c(
-    "&mu" = "location",
-    "&sigma" = "scale"
+    "&#x3BC" = "location",
+    "&#x3C3" = "scale"
   ),
   chisq = c(
     "df" = "df"
@@ -75,7 +75,7 @@ distributions$params <- list(
     "x" = "x"
   ),
   exponential = c(
-    "&lambda" = "rate"
+    "&#x3BB" = "rate"
   ),
   f = c(
     "df1" = "df1",
@@ -83,14 +83,14 @@ distributions$params <- list(
   ),
   gamma = c(
     "k" = "shape",
-    "&beta" = "rate"
+    "&#x3B2" = "rate"
   ),
   geometric = c(
     "p" = "prob"
   ),
   gumbel = c(
-    "&mu" = "alpha",
-    "&sigma" = "scale"
+    "&#x3BC" = "alpha",
+    "&#x3C3" = "scale"
   ),
   hypergeometric = c(
     "m" = "m",
@@ -98,49 +98,49 @@ distributions$params <- list(
     "k" = "k"
   ),
   inverse_exponential = c(
-    "&lambda" = "rate"
+    "&#x3BB" = "rate"
   ),
   inverse_gamma = c(
     "k" = "shape",
-    "&beta" = "scale"
+    "&#x3B2" = "scale"
   ),
   inverse_gaussian = c(
-    "&mu" = "mean",
-    "&lambda" = "shape"
+    "&#x3BC" = "mean",
+    "&#x3BB" = "shape"
   ),
   logarithmic = c(
     "p" = "prob"
   ),
   logistic = c(
-    "&mu" = "location",
-    "&sigma" = "scale"
+    "&#x3BC" = "location",
+    "&#x3C3" = "scale"
   ),
   negative_binomial = c(
     "n" = "size",
     "p" = "prob"
   ),
   normal = c(
-    "&mu" = "mu",
-    "&sigma" = "sigma"
+    "&#x3BC" = "mu",
+    "&#x3C3" = "sigma"
   ),
   pareto = c(
     "x" = "shape",
-    "&alpha" = "scale"
+    "&#x3B1" = "scale"
   ),
   poisson = c(
-    "&lambda" = "lambda"
+    "&#x3BB" = "lambda"
   ),
   student_t = c(
     "df" = "df",
-    "&mu" = "mu",
-    "&sigma" = "sigma"
+    "&#x3BC" = "mu",
+    "&#x3C3" = "sigma"
   ),
   uniform = c(
     "a" = "min",
     "b" = "max"
   ),
   weibull = c(
-    "&lambda" = "shape",
+    "&#x3BB" = "shape",
     "k" = "scale"
   )
 )
