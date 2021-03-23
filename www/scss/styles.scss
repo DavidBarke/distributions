@@ -55,16 +55,14 @@ $border-color: #ccc;
 
 /* Small Card */
 
-$small-card-padding: 15px;
-
 .small-card {
+
+  $small-card-padding: 15px;
 
   padding: 0;
 
   .card-header {
-    padding: $small-card-padding - 5px {
-      bottom: 0;
-    };
+    padding: $small-card-padding;
   }
 
   .card-title {
@@ -72,15 +70,10 @@ $small-card-padding: 15px;
     font-size: 1rem;
   }
 
-  .card-title > .flex {
-    justify-content: space-between;
-  }
-
   .card-body {
     padding: $small-card-padding {
       top: 0;
     }
-
   }
 
   .form-group {
@@ -105,17 +98,10 @@ $small-card-padding: 15px;
   padding-right: 10px;
 }
 
-/* Badge */
-
 .badge {
-  display: inline !important;
-  padding: .3em .4em !important;
-  font-size: 75% !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-  vertical-align: middle !important;
-  border-radius: .25em !important;
   background-color: $border-color;
+}
+
+.badge-lg {
+  font-size: 90%;
 }

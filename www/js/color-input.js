@@ -11,11 +11,6 @@ $.extend(binding, {
   },
 
   subscribe: function(el, callback) {
-    /*$(el).on("input.color-input", function(e) {
-      console.log("callback");
-      callback();
-    });*/
-
     $(el).on("change.color-input", function(e) {
       console.log("callback");
       callback();
