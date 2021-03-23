@@ -14,7 +14,7 @@ distribution_box_ui <- function(id, label = "Distribution") {
     shiny::selectInput(
       inputId = ns("distribution"),
       label = NULL,
-      choices = distributions()
+      choices = distributions$choices
     )
   )
 
