@@ -1,49 +1,67 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(sortable)
 
-# Define UI for application that draws a histogram
-ui <- fluidPage(
-
-    # Application title
-    titlePanel("Old Faithful Geyser Data"),
-
-    # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
+ui <- htmltools::tagList(
+    htmltools::includeCSS("www/css/styles.css"),
+    bs4Dash::bs4DashPage(
+        header = bs4Dash::bs4DashNavbar(
+            title = "Distributor"
         ),
-
-        # Show a plot of the generated distribution
-        mainPanel(
-           plotOutput("distPlot")
+        sidebar = bs4Dash::bs4DashSidebar(
+            disable = TRUE
+        ),
+        body = bs4Dash::bs4DashBody(
+            shiny::fluidRow(
+                shiny::column(
+                    width = 3,
+                    htmltools::div(
+                        id = "drag_from",
+                        class = "outline panel-body",
+                        purrr::map(LETTERS[1:5], ~ {
+                            htmltools::div(
+                                shiny::icon("home"),
+                                .
+                            )
+                        })
+                    )
+                ),
+                shiny::column(
+                    width = 3,
+                    htmltools::div(
+                        id = "drag_to",
+                        class = "outline panel-body"
+                    )
+                ),
+                shiny::column(
+                    width = 6
+                )
+            )
+        )
+    ),
+    sortable::sortable_js(
+        css_id = "drag_from",
+        options = sortable::sortable_options(
+            group = list(
+                name = "group",
+                pull = TRUE,
+                put = TRUE
+            )
+        )
+    ),
+    sortable::sortable_js(
+        css_id = "drag_to",
+        options = sortable::sortable_options(
+            group = list(
+                name = "group",
+                pull = TRUE,
+                put = TRUE
+            )
         )
     )
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
 
-    output$distPlot <- renderPlot({
-        # generate bins based on input$bins from ui.R
-        x    <- faithful[, 2]
-        bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-        # draw the histogram with the specified number of bins
-        hist(x, breaks = bins, col = 'darkgray', border = 'white')
-    })
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
