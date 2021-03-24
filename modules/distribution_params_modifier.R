@@ -14,7 +14,7 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
       ns <- session$ns
 
       param_names_r <- shiny::reactive({
-        distributions$params[[distribution_id_r()]]
+        distribution_helper$get_params(distribution_id_r())
       })
 
       output$params <- shiny::renderUI({
@@ -29,6 +29,23 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
           }
         )
       })
+
+      params_r <- shiny::reactive({
+        x <- purrr::map2(
+          param_names_r(), seq_along(param_names_r()),
+          function(name, index) {
+            input[["param" %_% index]]
+        })
+
+        names(x) <- param_names_r()
+        print(x)
+      })
+
+      return_list <- list(
+        params_r = params_r
+      )
+
+      return(return_list)
     }
   )
 }

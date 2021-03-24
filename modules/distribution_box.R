@@ -5,11 +5,9 @@ distribution_box_ui <- function(id,
 ) {
   ns <- shiny::NS(id)
 
-  distribution <- distributions$id_to_name(
-    distributions$distribution_to_id(value)
-  )
+  distribution <- distribution_helper$dist_to_name(value)
 
-  distribution_params <- distributions$distribution_to_params(value)
+  distribution_params <- distribution_helper$dist_to_params(value)
 
   param_badges <- purrr::pmap(
     list(
@@ -18,7 +16,7 @@ distribution_box_ui <- function(id,
       index = seq_along(distribution_params)
     ),
     function(name, value, index) {
-      distribution_param(
+      distribution_param_input(
         inputId = ns("param" %_% index),
         name = name,
         value = value
@@ -27,6 +25,7 @@ distribution_box_ui <- function(id,
   )
 
   htmltools::div(
+    id = ns("distribution_box"),
     class = "flex distribution-box",
     color_input(
       inputId = ns("color"),
@@ -38,7 +37,10 @@ distribution_box_ui <- function(id,
       distribution,
       lg = TRUE
     ),
-    param_badges
+    htmltools::div(
+      id = ns("param_badges"),
+      param_badges
+    )
   )
 }
 
@@ -54,16 +56,16 @@ distribution_box_server <- function(id,
       ns <- session$ns
 
       distribution_id_r <- shiny::reactive({
-        distributions$choices[input$distribution_badge_text]
+        distribution_helper$get_choices()[input$distribution_badge_text]
       })
 
       distribution_r <- shiny::reactive({
-        param_names <- distributions$params[[distribution_id_r()]]
+        param_names <- distribution_helper$get_params(distribution_id_r())
         params <- rep(1, times = length(param_names))
         names(params) <- param_names
 
         do.call(
-          distributions$funcs[[distribution_id_r()]],
+          distribution_helper$get_func(distribution_id_r()),
           as.list(params)
         )
       })
@@ -93,10 +95,20 @@ distribution_box_server <- function(id,
         shiny::removeModal()
         updateBadgeInput(
           inputId = "distribution_badge",
-          text = distributions$id_to_name(
+          text = distribution_helper$id_to_name(
             distribution_modifier_return$distribution_id_r()
           )
         )
+
+        params <- distribution_modifier_return$params_r()
+        param_text <- paste(names(params), ":", params)
+
+        purrr::walk2(seq_along(params), param_text, function(index, text) {
+          updateBadgeInput(
+            inputId = "param" %_% index,
+            text = text
+          )
+        })
       })
     }
   )

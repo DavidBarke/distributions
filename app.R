@@ -17,6 +17,8 @@ size <- 100
 
 color_scale <- scales::col_numeric(palette(), c(1, size))
 
+distribution_helper <- Distribution$new()
+
 ui <- htmltools::tagList(
     htmltools::includeCSS("www/css/styles.css"),
     bs4Dash::bs4DashPage(
