@@ -34,7 +34,11 @@ distribution_box_ui <- function(id, label = "Distribution", color = "#fff") {
   box
 }
 
-distribution_box_server <- function(id, .values) {
+distribution_box_server <- function(id,
+                                    .values,
+                                    distribution_modifier_ui_proxy,
+                                    distribution_modifier_return
+) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
@@ -70,8 +74,7 @@ distribution_box_server <- function(id, .values) {
       shiny::observeEvent(input$distribution_badge, {
         shiny::showModal(shiny::modalDialog(
           title = "Modify Distribution",
-          distribution_modifier_ui(
-            id = ns("distribution_modifier"),
+          distribution_modifier_ui_proxy(
             current_distribution = distribution_r()
           ),
           footer = htmltools::tagList(
@@ -98,11 +101,6 @@ distribution_box_server <- function(id, .values) {
           )
         )
       })
-
-      distribution_modifier_return <- distribution_modifier_server(
-        id = "distribution_modifier",
-        .values = .values
-      )
     }
   )
 }

@@ -83,10 +83,24 @@ server <- function(input, output) {
     purrr::walk(seq_len(size), ~ {
         distribution_box_server(
             id = paste0("test_box_", .),
-            .values = .values
+            .values = .values,
+            distribution_modifier_return = distribution_modifier_return,
+            distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
         )
     })
 
+    distribution_modifier_return <- distribution_modifier_server(
+        id = "distribution_modifier",
+        .values = .values
+    )
+
+}
+
+distribution_modifier_ui_proxy <- function(current_distribution) {
+    distribution_modifier_ui(
+        id = "distribution_modifier",
+        current_distribution = current_distribution
+    )
 }
 
 shinyApp(ui = ui, server = server)
