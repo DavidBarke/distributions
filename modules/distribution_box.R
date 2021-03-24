@@ -38,8 +38,11 @@ distribution_box_ui <- function(id,
       lg = TRUE
     ),
     htmltools::div(
-      id = ns("param_badges"),
-      param_badges
+      # param_badges
+      dist_param_input(
+        inputId = ns("param_badges"),
+        distribution = value
+      )
     )
   )
 }

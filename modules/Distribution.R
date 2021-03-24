@@ -94,93 +94,93 @@ Distribution <- R6::R6Class(
     ),
 
     params = list(
-      bernoulli = c("p" = "prob"),
-      beta = c(
-        "Shape 1" = "shape1",
-        "Shape 2" = "shape2"
+      bernoulli = list("p" = "prob"),
+      beta = list(
+        "shape1" = "Shape 1",
+        "shape2" = "Shape 2"
       ),
-      binomial = c(
-        "n" = "size",
-        "p" = "prob"
+      binomial = list(
+        "size" = "n",
+        "prob" = "p"
       ),
-      cauchy = c(
-        "&#x3BC" = "location",
-        "&#x3C3" = "scale"
+      cauchy = list(
+        "location" = "&#x3BC",
+        "scale" = "&#x3C3"
       ),
-      chisq = c(
+      chisq = list(
         "df" = "df"
       ),
-      degenerate = c(
+      degenerate = list(
         "x" = "x"
       ),
-      exponential = c(
-        "&#x3BB" = "rate"
+      exponential = list(
+        "rate" = "&#x3BB"
       ),
-      f = c(
+      f = list(
         "df1" = "df1",
         "df2" = "df2"
       ),
-      gamma = c(
-        "k" = "shape",
-        "&#x3B2" = "rate"
+      gamma = list(
+        "shape" = "k",
+        "rate" = "&#x3B2"
       ),
-      geometric = c(
-        "p" = "prob"
+      geometric = list(
+        "prob" = "p"
       ),
-      gumbel = c(
-        "&#x3BC" = "alpha",
-        "&#x3C3" = "scale"
+      gumbel = list(
+        "alpha" = "&#x3BC",
+        "scale" = "&#x3C3"
       ),
-      hypergeometric = c(
+      hypergeometric = list(
         "m" = "m",
         "n" = "n",
         "k" = "k"
       ),
-      inverse_exponential = c(
-        "&#x3BB" = "rate"
+      inverse_exponential = list(
+        "rate" = "&#x3BB"
       ),
-      inverse_gamma = c(
-        "k" = "shape",
-        "&#x3B2" = "scale"
+      inverse_gamma = list(
+        "shape" = "k",
+        "scale" = "&#x3B2"
       ),
-      inverse_gaussian = c(
-        "&#x3BC" = "mean",
-        "&#x3BB" = "shape"
+      inverse_gaussian = list(
+        "mean" = "&#x3BC",
+        "shape" = "&#x3BB"
       ),
-      logarithmic = c(
-        "p" = "prob"
+      logarithmic = list(
+        "prob" = "p"
       ),
-      logistic = c(
-        "&#x3BC" = "location",
-        "&#x3C3" = "scale"
+      logistic = list(
+        "location" = "&#x3BC",
+        "scale" = "&#x3C3"
       ),
-      negbin = c(
-        "n" = "size",
-        "p" = "prob"
+      negbin = list(
+        "size" = "n",
+        "prob" = "p"
       ),
-      normal = c(
-        "&#x3BC" = "mu",
-        "&#x3C3" = "sigma"
+      normal = list(
+        "mu" = "&#x3BC",
+        "sigma" = "&#x3C3"
       ),
-      pareto = c(
-        "x" = "shape",
-        "&#x3B1" = "scale"
+      pareto = list(
+        "shape" = "x",
+        "scale" = "&#x3B1"
       ),
-      poisson = c(
-        "&#x3BB" = "lambda"
+      poisson = list(
+        "scale" = "&#x3BB"
       ),
-      student_t = c(
+      student_t = list(
         "df" = "df",
-        "&#x3BC" = "mu",
-        "&#x3C3" = "sigma"
+        "mu" = "&#x3BC",
+        "sigma" = "&#x3C3"
       ),
-      uniform = c(
-        "a" = "min",
-        "b" = "max"
+      uniform = list(
+        "min" = "a",
+        "max" = "b"
       ),
-      weibull = c(
-        "&#x3BB" = "shape",
-        "k" = "scale"
+      weibull = list(
+        "shape" = "&#x3BB",
+        "scale" = "k"
       )
     )
   )

@@ -1,7 +1,9 @@
 /* Globals */
 
+$dark-border-color: rgb(102, 102, 102);
 $border-color: #ccc;
 $spacing: 5px;
+$primary: rgb(0, 123, 255);
 
 /* Drag & Drop */
 
@@ -58,12 +60,20 @@ $spacing: 5px;
 .distribution-box {
   padding: $spacing;
   margin-bottom: $spacing;
-  border: 1px solid $border-color;
-  border-radius: $spacing;
+  border-width: 1.6px;
+  border-left-width: 4.8px;
+  border-color: $dark-border-color;
+  border-style: solid;
+  border-radius: 0 $spacing $spacing 0;
 
   .badge {
     cursor: pointer;
   }
+}
+
+.distribution-box:hover {
+  border-color: $primary;
+  cursor: grab;
 }
 
 /* Badges */
@@ -71,6 +81,7 @@ $spacing: 5px;
 .badge {
   background-color: $border-color;
   margin: 0 5px;
+  border: 1px solid #aaa;
 }
 
 .badge-lg {
