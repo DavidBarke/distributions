@@ -25,14 +25,3 @@ distribution_param <- function(name, value) {
     badge(text)
   )
 }
-
-badge <- function(text, lg = FALSE) {
-  class <- "badge"
-
-  if (lg) class <- paste(class, "badge-lg")
-
-  htmltools::span(
-    class = class,
-    text
-  )
-}

@@ -18,7 +18,7 @@ distributions$choices <- c(
   "Inverse Gaussian" = "inverse_gaussian",
   "Logarithmic" = "logarithmic",
   "Logistic" = "logistic",
-  "Negative Binomial" = "negative_binomial",
+  "Negative Binomial" = "negbin",
   "Normal" = "normal",
   "Pareto" = "pareto",
   "Poisson" = "poisson",
@@ -27,7 +27,7 @@ distributions$choices <- c(
   "Weibull" = "weibull"
 )
 
-distributions$func <- list(
+distributions$funcs <- list(
   bernoulli = distributional::dist_bernoulli,
   beta = distributional::dist_beta,
   binomial = distributional::dist_binomial,
@@ -45,7 +45,7 @@ distributions$func <- list(
   inverse_gaussian = distributional::dist_inverse_gaussian,
   logarithmic = distributional::dist_logarithmic,
   logistic = distributional::dist_logistic,
-  negative_binomial = distributional::dist_negative_binomial,
+  negbin = distributional::dist_negative_binomial,
   normal = distributional::dist_normal,
   pareto = distributional::dist_pareto,
   poisson = distributional::dist_poisson,
@@ -115,7 +115,7 @@ distributions$params <- list(
     "&#x3BC" = "location",
     "&#x3C3" = "scale"
   ),
-  negative_binomial = c(
+  negbin = c(
     "n" = "size",
     "p" = "prob"
   ),
@@ -144,5 +144,16 @@ distributions$params <- list(
     "k" = "scale"
   )
 )
+
+distributions$distribution_to_id <- function(distribution) {
+  dist_cls <- class(distribution[[1]])[1]
+
+  # Extracts everything after the first _
+  stringr::str_extract(dist_cls, "(?<=_).*$")
+}
+
+distributions$id_to_name <- function(id) {
+  names(distributions$choices[distributions$choices == id])
+}
 
 
