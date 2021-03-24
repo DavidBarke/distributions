@@ -26,31 +26,20 @@ distribution_box_ui <- function(id,
     }
   )
 
-  box <- bs4Dash::box(
-    width = 12,
-    collapsible = FALSE,
-    title = htmltools::div(
-      class = "flex",
-      color_input(
-        inputId = ns("color"),
-        value = color,
-        bg = ".distribution-box"
-      ),
-      badge_input(
-        inputId = ns("distribution_badge"),
-        distribution,
-        lg = TRUE
-      )
+  htmltools::div(
+    class = "flex distribution-box",
+    color_input(
+      inputId = ns("color"),
+      value = color,
+      bg = ".distribution-box"
+    ),
+    badge_input(
+      inputId = ns("distribution_badge"),
+      distribution,
+      lg = TRUE
     ),
     param_badges
   )
-
-  box$children[[1]]$attribs$class <- paste(
-    box$children[[1]]$attribs$class,
-    "small-card", "distribution-box"
-  )
-
-  box
 }
 
 distribution_box_server <- function(id,

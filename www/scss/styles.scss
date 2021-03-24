@@ -1,6 +1,7 @@
 /* Globals */
 
 $border-color: #ccc;
+$spacing: 5px;
 
 /* Drag & Drop */
 
@@ -53,53 +54,23 @@ $border-color: #ccc;
   align-items: center;
 }
 
-/* Small Card */
-
-.small-card {
-
-  $small-card-padding: 15px;
-
-  padding: 0;
-
-  .card-header {
-    padding: $small-card-padding;
-  }
-
-  .card-title {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  .card-body {
-    padding: $small-card-padding {
-      top: 0;
-    }
-  }
-
-  .form-group {
-    margin-bottom: 0;
-    max-width: 80%;
-  }
-
-  .selectize-control {
-    margin: 5px {
-      bottom: 0;
-    }
-  }
+/* Distribution Box */
+.distribution-box {
+  padding: $spacing;
+  margin-bottom: $spacing;
+  border: 1px solid $border-color;
+  border-radius: $spacing;
 
   .badge {
     cursor: pointer;
   }
 }
 
-/* Distribution Parameters */
-
-.distribution-param {
-  padding-right: 10px;
-}
+/* Badges */
 
 .badge {
   background-color: $border-color;
+  margin: 0 5px;
 }
 
 .badge-lg {
