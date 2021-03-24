@@ -156,4 +156,10 @@ distributions$id_to_name <- function(id) {
   names(distributions$choices[distributions$choices == id])
 }
 
+distributions$distribution_to_params <- function(distribution) {
+  x <- as.numeric(distribution[[1]])
+  names(x) <- names(distribution[[1]])
+  x
+}
+
 

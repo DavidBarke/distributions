@@ -1,8 +1,30 @@
-distribution_box_ui <- function(id, label = "Distribution", color = "#fff") {
+distribution_box_ui <- function(id,
+                                label = "Distribution",
+                                color = "#fff",
+                                value = distributional::dist_normal()
+) {
   ns <- shiny::NS(id)
 
-  index <- sample(seq_along(distributions$choices), 1)
-  distribution <- names(distributions$choices[index])
+  distribution <- distributions$id_to_name(
+    distributions$distribution_to_id(value)
+  )
+
+  distribution_params <- distributions$distribution_to_params(value)
+
+  param_badges <- purrr::pmap(
+    list(
+      name = names(distribution_params),
+      value = distribution_params,
+      index = seq_along(distribution_params)
+    ),
+    function(name, value, index) {
+      distribution_param(
+        inputId = ns("param" %_% index),
+        name = name,
+        value = value
+      )
+    }
+  )
 
   box <- bs4Dash::box(
     width = 12,
@@ -20,10 +42,7 @@ distribution_box_ui <- function(id, label = "Distribution", color = "#fff") {
         lg = TRUE
       )
     ),
-    shiny::uiOutput(
-      outputId = ns("params"),
-      class = "flex"
-    )
+    param_badges
   )
 
   box$children[[1]]$attribs$class <- paste(
@@ -58,17 +77,6 @@ distribution_box_server <- function(id,
           distributions$funcs[[distribution_id_r()]],
           as.list(params)
         )
-      })
-
-      output$params <- shiny::renderUI({
-        params <- distributions$params[[distribution_id_r()]]
-
-        purrr::map(names(params), ~ {
-          distribution_param(
-            name = htmltools::HTML(.),
-            value = 1
-          )
-        })
       })
 
       shiny::observeEvent(input$distribution_badge, {
