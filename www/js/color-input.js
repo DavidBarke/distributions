@@ -6,14 +6,27 @@ $.extend(binding, {
     return $(scope).find(".color-input").find("input");
   },
 
+  initialize: function(el) {
+    var bg = $(el).data("bg");
+    if (typeof bg !== "undefined") {
+      $(el).closest(bg).css("background-color", $(el).val());
+    }
+  },
+
   getValue: function(el) {
     return $(el).val();
   },
 
   subscribe: function(el, callback) {
     $(el).on("change.color-input", function(e) {
-      console.log("callback");
       callback();
+    });
+
+    $(el).on("input.color-input", function(e) {
+      var bg = $(el).data("bg");
+      if (typeof bg !== "undefined") {
+        $(el).closest(bg).css("background-color", $(el).val());
+      }
     });
   },
 

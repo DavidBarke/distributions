@@ -13,7 +13,7 @@ sass::sass(
     cache = FALSE
 )
 
-size <- 50
+size <- 100
 
 color_scale <- scales::col_numeric(palette(), c(1, size))
 

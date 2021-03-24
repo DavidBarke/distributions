@@ -1,4 +1,4 @@
-color_input <- function(inputId, label = NULL, value = "#fff") {
+color_input <- function(inputId, label = NULL, value = "#fff", bg = NULL) {
   htmltools::tagList(
     htmltools::singleton(
       htmltools::tags$script(
@@ -16,7 +16,8 @@ color_input <- function(inputId, label = NULL, value = "#fff") {
       htmltools::tags$input(
         type = "color",
         value = value,
-        id = inputId
+        id = inputId,
+        `data-bg` = if (!is.null(bg)) bg
       )
     )
   )

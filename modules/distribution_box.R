@@ -11,7 +11,8 @@ distribution_box_ui <- function(id, label = "Distribution", color = "#fff") {
       class = "flex",
       color_input(
         inputId = ns("color"),
-        value = color
+        value = color,
+        bg = ".distribution-box"
       ),
       badge(distribution, lg = TRUE)
     ),
@@ -21,7 +22,10 @@ distribution_box_ui <- function(id, label = "Distribution", color = "#fff") {
     )
   )
 
-  box$attribs$class <- paste(box$attribs$class, "small-card")
+  box$children[[1]]$attribs$class <- paste(
+    box$children[[1]]$attribs$class,
+    "small-card", "distribution-box"
+  )
 
   box
 }
