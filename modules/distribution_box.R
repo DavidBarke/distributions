@@ -5,25 +5,6 @@ distribution_box_ui <- function(id,
 ) {
   ns <- shiny::NS(id)
 
-  distribution <- distribution_helper$dist_to_name(value)
-
-  distribution_params <- distribution_helper$dist_to_params(value)
-
-  param_badges <- purrr::pmap(
-    list(
-      name = names(distribution_params),
-      value = distribution_params,
-      index = seq_along(distribution_params)
-    ),
-    function(name, value, index) {
-      distribution_param_input(
-        inputId = ns("param" %_% index),
-        name = name,
-        value = value
-      )
-    }
-  )
-
   htmltools::div(
     id = ns("distribution_box"),
     class = "flex distribution-box",
@@ -32,17 +13,9 @@ distribution_box_ui <- function(id,
       value = color,
       bg = ".distribution-box"
     ),
-    badge_input(
-      inputId = ns("distribution_badge"),
-      distribution,
-      lg = TRUE
-    ),
-    htmltools::div(
-      # param_badges
-      dist_param_input(
-        inputId = ns("param_badges"),
-        distribution = value
-      )
+    distribution_input(
+      inputId = ns("distribution"),
+      value = value
     )
   )
 }
@@ -59,13 +32,13 @@ distribution_box_server <- function(id,
       ns <- session$ns
 
       distribution_id_r <- shiny::reactive({
-        distribution_helper$get_choices()[input$distribution_badge_text]
+        input$distribution$distribution_id
       })
 
       distribution_r <- shiny::reactive({
         param_names <- distribution_helper$get_params(distribution_id_r())
         params <- rep(1, times = length(param_names))
-        names(params) <- param_names
+        names(params) <- names(param_names)
 
         do.call(
           distribution_helper$get_func(distribution_id_r()),
@@ -73,7 +46,7 @@ distribution_box_server <- function(id,
         )
       })
 
-      shiny::observeEvent(input$distribution_badge, {
+      shiny::observeEvent(input$distribution_click, {
         shiny::showModal(shiny::modalDialog(
           title = "Modify Distribution",
           distribution_modifier_ui_proxy(
@@ -96,22 +69,16 @@ distribution_box_server <- function(id,
 
       shiny::observeEvent(input$confirm, {
         shiny::removeModal()
-        updateBadgeInput(
-          inputId = "distribution_badge",
-          text = distribution_helper$id_to_name(
-            distribution_modifier_return$distribution_id_r()
+
+        update_distribution_input(
+          inputId = "distribution",
+          value = do.call(
+            what = distribution_helper$get_func(
+              distribution_modifier_return$distribution_id_r()
+            ),
+            args = distribution_modifier_return$params_r()
           )
         )
-
-        params <- distribution_modifier_return$params_r()
-        param_text <- paste(names(params), ":", params)
-
-        purrr::walk2(seq_along(params), param_text, function(index, text) {
-          updateBadgeInput(
-            inputId = "param" %_% index,
-            text = text
-          )
-        })
       })
     }
   )

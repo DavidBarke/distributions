@@ -14,12 +14,16 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
       ns <- session$ns
 
       param_names_r <- shiny::reactive({
-        distribution_helper$get_params(distribution_id_r())
+        as.character(distribution_helper$get_params(distribution_id_r()))
+      })
+
+      param_ids_r <- shiny::reactive({
+        names(distribution_helper$get_params(distribution_id_r()))
       })
 
       output$params <- shiny::renderUI({
         purrr::map2(
-          names(param_names_r()), seq_along(param_names_r()),
+          param_names_r(), seq_along(param_names_r()),
           function(name, index) {
             shiny::numericInput(
               inputId = ns("param" %_% index),
@@ -37,8 +41,8 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
             input[["param" %_% index]]
         })
 
-        names(x) <- param_names_r()
-        print(x)
+        names(x) <- param_ids_r()
+        x
       })
 
       return_list <- list(

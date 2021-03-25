@@ -8,6 +8,13 @@ Distribution <- R6::R6Class(
       stringr::str_extract(dist_cls, "(?<=_).*$")
     },
 
+    dist_to_msg = function(distribution) {
+      list(
+        distribution_id = self$dist_to_id(distribution),
+        distribution_param_values = unname(self$dist_to_params(distribution))
+      )
+    },
+
     dist_to_name = function(distribution) {
       self$id_to_name(
         self$dist_to_id(
@@ -108,7 +115,8 @@ Distribution <- R6::R6Class(
         "scale" = "&#x3C3"
       ),
       chisq = list(
-        "df" = "df"
+        "df" = "df",
+        "ncp" = "ncp"
       ),
       degenerate = list(
         "x" = "x"
@@ -167,12 +175,13 @@ Distribution <- R6::R6Class(
         "scale" = "&#x3B1"
       ),
       poisson = list(
-        "scale" = "&#x3BB"
+        "lambda" = "&#x3BB"
       ),
       student_t = list(
         "df" = "df",
         "mu" = "&#x3BC",
-        "sigma" = "&#x3C3"
+        "sigma" = "&#x3C3",
+        "ncp" = "ncp"
       ),
       uniform = list(
         "min" = "a",
