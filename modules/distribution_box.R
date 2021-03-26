@@ -1,4 +1,5 @@
 distribution_box_ui <- function(id,
+                                index,
                                 label = "Distribution",
                                 color = "#fff",
                                 value = distributional::dist_normal()
@@ -7,6 +8,7 @@ distribution_box_ui <- function(id,
 
   htmltools::div(
     id = ns("distribution_box"),
+    `data-rank-id` = index,
     class = "flex space-between distribution-box",
     htmltools::div(
       class = "flex",
@@ -39,12 +41,12 @@ distribution_box_server <- function(id,
       ns <- session$ns
 
       distribution_id_r <- shiny::reactive({
-        input$distribution$distribution_id
+        shiny::req(input$distribution)$distribution_id
       })
 
       distribution_r <- shiny::reactive({
         param_names <- distribution_helper$get_params(distribution_id_r())
-        params <- rep(1, times = length(param_names))
+        params <- shiny::req(input$distribution)$distribution_param_values
         names(params) <- names(param_names)
 
         do.call(
@@ -90,6 +92,12 @@ distribution_box_server <- function(id,
           value = distribution_modifier_return$distribution_r()
         )
       })
+
+      return_list <- list(
+        distribution_r = distribution_r
+      )
+
+      return(return_list)
     }
   )
 }

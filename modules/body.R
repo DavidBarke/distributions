@@ -3,48 +3,19 @@ body_ui <- function(id) {
 
   htmltools::tagList(
     shiny::fluidRow(
-      shiny::column(
-        width = 3,
-        drop_zone(
-          id = ns("drag_from"),
-          label = "Inactive Distributions",
-          purrr::map2(seq_len(size), color_scale(seq_len(size)), ~ {
-            distribution_box_ui(
-              id = ns("distribution" %_% .x),
-              color = .y
-            )
-          })
+      drag_from_ui(
+        id = ns("drag_from"),
+        # distribution_manager displays initial distributions, further
+        # distributions are inserted to drag_from
+        distribution_manager_ui(
+          id = ns("distribution_manager")
         )
       ),
-      shiny::column(
-        width = 3,
-        drop_zone(
-          id = ns("drag_to"),
-          label = "Active Distributions"
-        )
+      drag_to_ui(
+        id = ns("drag_to")
       ),
       shiny::column(
         width = 6
-      )
-    ),
-    sortable::sortable_js(
-      css_id = ns("drag_from"),
-      options = sortable::sortable_options(
-        group = list(
-          name = "group",
-          pull = TRUE,
-          put = TRUE
-        )
-      )
-    ),
-    sortable::sortable_js(
-      css_id = ns("drag_to"),
-      options = sortable::sortable_options(
-        group = list(
-          name = "group",
-          pull = TRUE,
-          put = TRUE
-        )
       )
     )
   )
@@ -57,23 +28,27 @@ body_server <- function(id, .values) {
 
       ns <- session$ns
 
-      distribution_ui_proxy <- distribution_modifier_ui_proxy_factory(
-        id = ns("distribution_modifier")
+      distribution_manager_return <- distribution_manager_server(
+        id = "distribution_manager",
+        .values = .values,
+        add_r = drag_from_return$add_r
       )
 
-      purrr::walk(seq_len(size), ~ {
-        distribution_box_server(
-          id = "distribution" %_% .,
-          .values = .values,
-          distribution_modifier_return = distribution_modifier_return,
-          distribution_modifier_ui_proxy = distribution_ui_proxy
-        )
-      })
-
-      distribution_modifier_return <- distribution_modifier_server(
-        id = "distribution_modifier",
+      drag_from_return <- drag_from_server(
+        id = "drag_from",
         .values = .values
       )
+
+      drag_to_return <- drag_to_server(
+        id = "drag_to",
+        .values = .values
+      )
+
+      active_distributions_r <- shiny::reactive({
+        distribution_manager_return$distributions_r()[
+          drag_to_return$active_distribution_indices_r()
+        ]
+      })
     }
   )
 }

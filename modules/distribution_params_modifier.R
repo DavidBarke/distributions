@@ -62,14 +62,16 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
       })
 
       params_r <- shiny::reactive({
-        x <- purrr::map2(
+        x <- purrr::map2_dbl(
           param_names_r(), seq_along(param_names_r()),
           function(name, index) {
             input[["param" %_% index]]
         })
 
+        if (distribution_id_r() == "uniform") x <- sort(x)
+
         names(x) <- param_ids_r()
-        x
+        as.list(x)
       })
 
       error_r <- shiny::reactive({

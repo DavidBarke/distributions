@@ -14,10 +14,6 @@ sass::sass(
     cache = FALSE
 )
 
-size <- 100
-
-color_scale <- scales::col_numeric(palette(), c(1, size))
-
 distribution_helper <- Distribution$new()
 
 ui <- htmltools::tagList(

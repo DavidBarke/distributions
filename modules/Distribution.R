@@ -49,6 +49,35 @@ Distribution <- R6::R6Class(
       unname(as.character(private$params[[id]]))
     },
 
+    get_random_distribution = function() {
+      func <- sample(private$funcs, 1)
+
+      param_ids <- self$get_param_ids(names(func))
+      param_vals <- purrr::map_dbl(param_ids, self$get_random_param_value)
+      if (names(func) == "uniform") param_vals <- sort(param_vals)
+      names(param_vals) <- param_ids
+
+      do.call(
+        func[[1]],
+        as.list(param_vals)
+      )
+    },
+
+    get_random_param_value = function(param_id) {
+      restrictions <- private$param_restrictions[[param_id]]
+
+      if (!length(restrictions)) restrictions <- "no"
+
+      switch (
+        restrictions,
+        "no" = round(runif(1, -5, 5), digits = 2),
+        "nn" = round(runif(1, 0, 10), digits = 2),
+        "pos" = round(runif(1, 1, 10), digits = 2),
+        "pos_int" = sample(1:20, 1),
+        "prob" = sample(seq(0, 1, length.out = 11), 1)
+      )
+    },
+
     id_to_name = function(id) {
       names(private$choices[private$choices == id])
     },
@@ -142,7 +171,7 @@ Distribution <- R6::R6Class(
     ),
 
     params = list(
-      bernoulli = list("p" = "prob"),
+      bernoulli = list("prob" = "p"),
       beta = list(
         "shape1" = "Shape 1",
         "shape2" = "Shape 2"
@@ -245,6 +274,7 @@ Distribution <- R6::R6Class(
       k = "pos_int",
       m = "pos_int",
       max = character(),
+      mean = "pos",
       min = character(),
       mu = character(),
       n = "pos_int",
