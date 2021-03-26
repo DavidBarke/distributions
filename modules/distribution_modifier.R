@@ -14,11 +14,14 @@ distribution_modifier_ui <- function(id, current_distribution) {
   )
 }
 
-distribution_modifier_ui_proxy <- function(current_distribution) {
-  distribution_modifier_ui(
-    id = "distribution_modifier",
-    current_distribution = current_distribution
-  )
+distribution_modifier_ui_proxy_factory <- function(id) {
+  force(id)
+  function(current_distribution) {
+    distribution_modifier_ui(
+      id = id,
+      current_distribution = current_distribution
+    )
+  }
 }
 
 distribution_modifier_server <- function(id, .values) {
@@ -29,7 +32,7 @@ distribution_modifier_server <- function(id, .values) {
       ns <- session$ns
 
       distribution_id_r <- shiny::reactive({
-        input$distribution
+        shiny::req(input$distribution)
       })
 
       params_return <- distribution_params_modifier_server(

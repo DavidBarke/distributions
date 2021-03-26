@@ -10,7 +10,7 @@ body_ui <- function(id) {
           label = "Inactive Distributions",
           purrr::map2(seq_len(size), color_scale(seq_len(size)), ~ {
             distribution_box_ui(
-              id = ns(paste0("distribution", .x)),
+              id = ns("distribution" %_% .x),
               color = .y
             )
           })
@@ -57,12 +57,16 @@ body_server <- function(id, .values) {
 
       ns <- session$ns
 
+      distribution_ui_proxy <- distribution_modifier_ui_proxy_factory(
+        id = ns("distribution_modifier")
+      )
+
       purrr::walk(seq_len(size), ~ {
         distribution_box_server(
-          id = paste0("test_box_", .),
+          id = "distribution" %_% .,
           .values = .values,
           distribution_modifier_return = distribution_modifier_return,
-          distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
+          distribution_modifier_ui_proxy = distribution_ui_proxy
         )
       })
 

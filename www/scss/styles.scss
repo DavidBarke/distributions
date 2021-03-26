@@ -56,8 +56,13 @@ $primary: rgb(0, 123, 255);
   align-items: center;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+
 /* Distribution Box */
 .distribution-box {
+  flex-wrap: nowrap;
   padding: $spacing;
   margin-bottom: $spacing;
   border-width: 1.6px;
@@ -65,9 +70,19 @@ $primary: rgb(0, 123, 255);
   border-color: $dark-border-color;
   border-style: solid;
   border-radius: 0 $spacing $spacing 0;
+  position: relative;
 
   .badge {
     cursor: pointer;
+  }
+
+  .distribution-remove {
+    color: white;
+
+    i {
+      padding: 5px;
+      cursor: pointer;
+    }
   }
 }
 
@@ -80,7 +95,7 @@ $primary: rgb(0, 123, 255);
 
 .badge {
   background-color: $border-color;
-  margin: 0 5px;
+  margin: 2px 5px;
   border: 1px solid #aaa;
 }
 

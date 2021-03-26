@@ -31,12 +31,10 @@ $.extend(binding, {
     $(el).find(".distribution-params").empty();
     var that = this;
     paramValues.forEach(function(paramVal, i) {
-      console.log(paramVal);
       var paramUI = that.paramUI(
         paramNames[i],
         paramVal
       );
-      console.log(paramUI);
       $(el).find(".distribution-params").append(paramUI);
     });
 
@@ -56,9 +54,18 @@ $.extend(binding, {
     $(el).on("click.distribution-input", function(e) {
       Shiny.setInputValue($(el).attr("id") + "_click", Math.random());
     });
+
+    var that = this;
+    $(el).closest(".distribution-box").on("click", ".distribution-remove", function (e) {
+      var target = $(this).closest(".distribution-box");
+      target.hide(400, function() {
+        target.remove();
+      });
+      that.unsubscribe(el);
+    });
   },
 
-  unsubscribe: function(el, callback) {
+  unsubscribe: function(el) {
     $(el).off(".distribution-input");
   },
 

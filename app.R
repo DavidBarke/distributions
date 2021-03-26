@@ -1,5 +1,6 @@
 library(shiny)
 library(sortable)
+library(magrittr)
 
 source("init/source_directory.R")
 source_directory("modules")

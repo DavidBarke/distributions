@@ -7,15 +7,22 @@ distribution_box_ui <- function(id,
 
   htmltools::div(
     id = ns("distribution_box"),
-    class = "flex distribution-box",
-    color_input(
-      inputId = ns("color"),
-      value = color,
-      bg = ".distribution-box"
+    class = "flex space-between distribution-box",
+    htmltools::div(
+      class = "flex",
+      color_input(
+        inputId = ns("color"),
+        value = color,
+        bg = ".distribution-box"
+      ),
+      distribution_input(
+        inputId = ns("distribution"),
+        value = value
+      )
     ),
-    distribution_input(
-      inputId = ns("distribution"),
-      value = value
+    htmltools::div(
+      class = "distribution-remove",
+      shiny::icon("times")
     )
   )
 }
