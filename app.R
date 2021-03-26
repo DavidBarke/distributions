@@ -31,50 +31,8 @@ ui <- htmltools::tagList(
             disable = TRUE
         ),
         body = bs4Dash::bs4DashBody(
-            shiny::fluidRow(
-                shiny::column(
-                    width = 3,
-                    drop_zone(
-                        id = "drag_from",
-                        label = "Inactive Distributions",
-                        purrr::map2(seq_len(size), color_scale(seq_len(size)), ~ {
-                            distribution_box_ui(
-                                id = paste0("test_box_", .x),
-                                color = .y
-                            )
-                        })
-                    )
-                ),
-                shiny::column(
-                    width = 3,
-                    drop_zone(
-                        id = "drag_to",
-                        label = "Active Distributions"
-                    )
-                ),
-                shiny::column(
-                    width = 6
-                )
-            )
-        )
-    ),
-    sortable::sortable_js(
-        css_id = "drag_from",
-        options = sortable::sortable_options(
-            group = list(
-                name = "group",
-                pull = TRUE,
-                put = TRUE
-            )
-        )
-    ),
-    sortable::sortable_js(
-        css_id = "drag_to",
-        options = sortable::sortable_options(
-            group = list(
-                name = "group",
-                pull = TRUE,
-                put = TRUE
+            body_ui(
+                id = "body"
             )
         )
     )
@@ -84,26 +42,9 @@ server <- function(input, output) {
 
     .values <- new.env()
 
-    purrr::walk(seq_len(size), ~ {
-        distribution_box_server(
-            id = paste0("test_box_", .),
-            .values = .values,
-            distribution_modifier_return = distribution_modifier_return,
-            distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
-        )
-    })
-
-    distribution_modifier_return <- distribution_modifier_server(
-        id = "distribution_modifier",
+    body_server(
+        id = "body",
         .values = .values
-    )
-
-}
-
-distribution_modifier_ui_proxy <- function(current_distribution) {
-    distribution_modifier_ui(
-        id = "distribution_modifier",
-        current_distribution = current_distribution
     )
 }
 

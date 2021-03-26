@@ -14,6 +14,13 @@ distribution_modifier_ui <- function(id, current_distribution) {
   )
 }
 
+distribution_modifier_ui_proxy <- function(current_distribution) {
+  distribution_modifier_ui(
+    id = "distribution_modifier",
+    current_distribution = current_distribution
+  )
+}
+
 distribution_modifier_server <- function(id, .values) {
   shiny::moduleServer(
     id,
