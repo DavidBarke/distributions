@@ -31,9 +31,16 @@ distribution_modifier_server <- function(id, .values) {
         distribution_id_r = distribution_id_r
       )
 
+      distribution_r <- shiny::reactive({
+        do.call(
+          what = distribution_helper$get_func(distribution_id_r()),
+          args = params_return$params_r()
+        )
+      })
+
       return_list <- list(
-        distribution_id_r = distribution_id_r,
-        params_r = params_return$params_r
+        error_r = params_return$error_r,
+        distribution_r = distribution_r
       )
 
       return(return_list)

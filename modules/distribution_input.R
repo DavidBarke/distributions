@@ -32,7 +32,7 @@ distribution_input <- function(inputId, value) {
       id = inputId,
       class = "flex distribution-input",
       htmltools::span(
-        class = "badge distribution-name",
+        class = "badge badge-lg distribution-name",
         distribution_name
       ),
       htmltools::div(

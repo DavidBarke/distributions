@@ -23,7 +23,9 @@ ui <- htmltools::tagList(
     htmltools::includeCSS("www/css/styles.css"),
     bs4Dash::bs4DashPage(
         header = bs4Dash::bs4DashNavbar(
-            title = "Distributor"
+            title = bs4Dash::bs4DashBrand(
+                title = "Distributions"
+            )
         ),
         sidebar = bs4Dash::bs4DashSidebar(
             disable = TRUE

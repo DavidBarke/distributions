@@ -41,8 +41,49 @@ Distribution <- R6::R6Class(
       private$params[[id]]
     },
 
+    get_param_ids = function(id) {
+      names(private$params[[id]])
+    },
+
+    get_param_names = function(id) {
+      unname(as.character(private$params[[id]]))
+    },
+
     id_to_name = function(id) {
       names(private$choices[private$choices == id])
+    },
+
+    # returns logical
+    is_valid_param_value = function(value, param_id, distribution_id) {
+      # distribution_id is currently unused
+
+      if (is.na(value)) return(FALSE)
+
+      restrictions <- c(
+        private$param_restrictions[[param_id]]
+      )
+
+      is_valid <- purrr::map_lgl(private$check_funs[restrictions], ~ .(value))
+
+      all(is_valid)
+    },
+
+    # calls shiny::validate for UI
+    validate_param_value = function(value, param_id, distribution_id) {
+      # distribution_id is currently unused
+
+      restrictions <- c(
+        "not_na",
+        private$param_restrictions[[param_id]]
+      )
+
+      # Evaluate need functions
+      needs <- purrr::map(private$need_funs[restrictions], ~ .(value))
+
+      do.call(
+        shiny::validate,
+        needs
+      )
     }
   ),
   private = list(
@@ -126,7 +167,8 @@ Distribution <- R6::R6Class(
       ),
       f = list(
         "df1" = "df1",
-        "df2" = "df2"
+        "df2" = "df2",
+        "ncp" = "ncp"
       ),
       gamma = list(
         "shape" = "k",
@@ -191,6 +233,63 @@ Distribution <- R6::R6Class(
         "shape" = "&#x3BB",
         "scale" = "k"
       )
+    ),
+
+    param_restrictions = list(
+      alpha = character(),
+      df = "nn",
+      df1 = "nn",
+      df2 = "nn",
+      lambda = "nn",
+      location = character(),
+      k = "pos_int",
+      m = "pos_int",
+      max = character(),
+      min = character(),
+      mu = character(),
+      n = "pos_int",
+      ncp = "nn",
+      prob = "prob",
+      rate = "pos",
+      scale = "pos",
+      shape = "nn",
+      shape1 = "nn",
+      shape2 = "nn",
+      sigma = "pos",
+      size = "pos_int",
+      x = character()
+    ),
+
+    check_funs = list(
+      not_na = purrr::compose(`!`, is.na),
+      nn = function(x) x >= 0,
+      pos = function(x) x > 0,
+      pos_int = function(x) x > 0 && as.integer(x) == x,
+      prob = function(x) x >= 0 && x <= 1
+    ),
+
+    need_funs = list(
+      not_na = function(value) {
+        shiny::need(!is.na(value), "Parameter must be a number.")
+      },
+      nn = function(value) {
+        shiny::need(value >= 0, "Parameter must be non-negative.")
+      },
+      pos = function(value) {
+        shiny::need(value > 0, "Parameter must be positive.")
+      },
+      pos_int = function(value, param_id, distribution_id) {
+        shiny::need(
+          value > 0 && as.integer(value) == value,
+          "Parameter must be a positive integer."
+        )
+      },
+      prob = function(value) {
+        shiny::need(
+          value >= 0 && value <= 1,
+          "Parameter must be between 0 and 1."
+        )
+      }
     )
   )
 )

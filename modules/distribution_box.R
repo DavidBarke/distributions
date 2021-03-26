@@ -53,10 +53,8 @@ distribution_box_server <- function(id,
             current_distribution = distribution_r()
           ),
           footer = htmltools::tagList(
-            shiny::actionButton(
-              inputId = ns("confirm"),
-              label = "Confirm",
-              icon = shiny::icon("check")
+            shiny::uiOutput(
+              outputId = ns("confirm_btn")
             ),
             shiny::modalButton(
               label = "Close",
@@ -67,17 +65,22 @@ distribution_box_server <- function(id,
         ))
       }, ignoreInit = TRUE)
 
+      output$confirm_btn <- shiny::renderUI({
+        if (!distribution_modifier_return$error_r()) {
+          shiny::actionButton(
+            inputId = ns("confirm"),
+            label = "Confirm",
+            icon = shiny::icon("check")
+          )
+        }
+      })
+
       shiny::observeEvent(input$confirm, {
         shiny::removeModal()
 
         update_distribution_input(
           inputId = "distribution",
-          value = do.call(
-            what = distribution_helper$get_func(
-              distribution_modifier_return$distribution_id_r()
-            ),
-            args = distribution_modifier_return$params_r()
-          )
+          value = distribution_modifier_return$distribution_r()
         )
       })
     }

@@ -102,7 +102,7 @@ $.extend(binding, {
       "chisq": ["df", "ncp"],
       "degenerate": ["x"],
       "exponential": ["&#x3BB"],
-      "f": ["df1", "df2"],
+      "f": ["df1", "df2", "ncp"],
       "gamma": ["k", "&#x3B2"],
       "geometric": ["p"],
       "gumbel": ["&#x3BC","&#x3C3"],
