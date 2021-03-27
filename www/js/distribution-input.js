@@ -7,8 +7,11 @@ $.extend(binding, {
   },
 
   initialize: function(el) {
-    $(el).data("distribution-id", "normal");
-    $(el).data("distribution-param-values", [0, 1]);
+    console.log("niti");
+    $(el).data("distribution-id", $(el).attr("data-distribution"));
+    var paramValues = $(el).attr("data-params").
+      split(",").map(x => parseInt(x));
+    $(el).data("distribution-param-values", paramValues);
   },
 
   getValue: function(el) {

@@ -30,6 +30,8 @@ distribution_input <- function(inputId, value) {
     ),
     htmltools::div(
       id = inputId,
+      `data-distribution` = distribution_id,
+      `data-params` = paste(distribution_params, collapse = ","),
       class = "flex distribution-input",
       htmltools::span(
         class = "badge badge-lg distribution-name",

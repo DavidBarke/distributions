@@ -49,6 +49,10 @@ body_server <- function(id, .values) {
           drag_to_return$active_distribution_indices_r()
         ]
       })
+
+      shiny::observe({
+        print(active_distributions_r())
+      })
     }
   )
 }
