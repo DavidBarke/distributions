@@ -10,7 +10,7 @@ $.extend(binding, {
     console.log("niti");
     $(el).data("distribution-id", $(el).attr("data-distribution"));
     var paramValues = $(el).attr("data-params").
-      split(",").map(x => parseInt(x));
+      split(",").map(x => parseFloat(x));
     $(el).data("distribution-param-values", paramValues);
   },
 
