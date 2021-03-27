@@ -7,7 +7,6 @@ $.extend(binding, {
   },
 
   initialize: function(el) {
-    console.log("niti");
     $(el).data("distribution-id", $(el).attr("data-distribution"));
     var paramValues = $(el).attr("data-params").
       split(",").map(x => parseFloat(x));
@@ -138,7 +137,7 @@ $.extend(binding, {
     return $('<span class="badge distribution-param">'
     + '<span class="distribution-param-name">'
     + name
-    + '</span>:<span class="distribution-param-value">'
+    + '</span> : <span class="distribution-param-value">'
     + value
     + '</span>'
     + '</span>');
