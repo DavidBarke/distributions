@@ -31,6 +31,8 @@ distribution_modifier_server <- function(id, .values) {
 
       ns <- session$ns
 
+      current_distribution_rv <- shiny::reactiveVal(NULL)
+
       distribution_id_r <- shiny::reactive({
         shiny::req(input$distribution)
       })
@@ -38,7 +40,8 @@ distribution_modifier_server <- function(id, .values) {
       params_return <- distribution_params_modifier_server(
         id = "distribution_params",
         .values = .values,
-        distribution_id_r = distribution_id_r
+        distribution_id_r = distribution_id_r,
+        current_distribution_rv = current_distribution_rv
       )
 
       distribution_r <- shiny::reactive({
@@ -50,7 +53,10 @@ distribution_modifier_server <- function(id, .values) {
 
       return_list <- list(
         error_r = params_return$error_r,
-        distribution_r = distribution_r
+        distribution_r = distribution_r,
+        # current_distribution_rv has to be set before the modal dialog is
+        # displayed in order to get the selected values for the params
+        current_distribution_rv = current_distribution_rv
       )
 
       return(return_list)

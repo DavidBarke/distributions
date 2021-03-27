@@ -6,7 +6,11 @@ distribution_params_modifier_ui <- function(id) {
   )
 }
 
-distribution_params_modifier_server <- function(id, .values, distribution_id_r) {
+distribution_params_modifier_server <- function(id,
+                                                .values,
+                                                distribution_id_r,
+                                                current_distribution_rv
+) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
@@ -21,6 +25,19 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
 
       param_ids_r <- shiny::reactive({
         distribution_helper$get_param_ids(distribution_id_r())
+      })
+
+      current_distribution_id_r <- shiny::reactive({
+        distribution_helper$dist_to_id(current_distribution_rv())
+      })
+
+      selected_values_r <- shiny::reactive({
+        print(current_distribution_rv())
+        if (distribution_id_r() == current_distribution_id_r()) {
+          distribution_helper$dist_to_params(current_distribution_rv())
+        } else {
+          rep(1, times = length(param_ids_r()))
+        }
       })
 
       output$params <- shiny::renderUI({
@@ -51,7 +68,7 @@ distribution_params_modifier_server <- function(id, .values, distribution_id_r) 
               shiny::numericInput(
                 inputId = ns("param" %_% index),
                 label = htmltools::HTML(name),
-                value = 1
+                value = selected_values_r()[index]
               ),
               shiny::uiOutput(
                 outputId = ns("param_error" %_% index)

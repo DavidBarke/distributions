@@ -56,6 +56,8 @@ distribution_box_server <- function(id,
       })
 
       shiny::observeEvent(input$distribution_click, {
+        distribution_modifier_return$current_distribution_rv(distribution_r())
+
         shiny::showModal(shiny::modalDialog(
           title = "Modify Distribution",
           distribution_modifier_ui_proxy(
