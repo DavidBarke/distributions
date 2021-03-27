@@ -33,7 +33,25 @@ Distribution <- R6::R6Class(
                              type = c("d", "p", "q"),
                              limits = c(0, 10)
     ) {
+      type <- match.arg(type)
 
+      discrete <- self$is_discrete(distribution)
+
+      # Get S3 generic
+      to_trace_fun <- if (discrete) {
+        dist_to_trace_discrete
+      } else {
+        dist_to_trace_continuous
+      }
+
+      # Dispatch
+      class(distribution) <- c(class(distribution), type)
+
+      to_trace_fun(
+        distribution = distribution,
+        type = type,
+        limits = sort(limits)
+      )
     },
 
     get_choices = function() {
@@ -104,6 +122,10 @@ Distribution <- R6::R6Class(
       all(is_valid)
     },
 
+    is_discrete = function(distribution) {
+      self$dist_to_id(distribution) %in% private$discrete
+    },
+
     # calls shiny::validate for UI
     validate_param_value = function(value, param_id, distribution_id) {
       # distribution_id is currently unused
@@ -148,6 +170,16 @@ Distribution <- R6::R6Class(
       "Student's t" = "student_t",
       "Uniform" = "uniform",
       "Weibull" = "weibull"
+    ),
+
+    discrete = c(
+      "bernoulli",
+      "binomial",
+      "geometric",
+      "hypergeometric",
+      "logarithmic",
+      "negbin",
+      "poisson"
     ),
 
     funcs = list(
