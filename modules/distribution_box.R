@@ -2,7 +2,7 @@ distribution_box_ui <- function(id,
                                 index,
                                 label = "Distribution",
                                 color = "#fff",
-                                value = distributional::dist_normal()
+                                value = distributional::dist_normal()[[1]]
 ) {
   ns <- shiny::NS(id)
 
@@ -52,7 +52,7 @@ distribution_box_server <- function(id,
         do.call(
           distribution_helper$get_func(distribution_id_r()),
           as.list(params)
-        )
+        )[[1]]
       })
 
       shiny::observeEvent(input$distribution_click, {

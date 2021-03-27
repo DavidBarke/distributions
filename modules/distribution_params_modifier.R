@@ -32,7 +32,6 @@ distribution_params_modifier_server <- function(id,
       })
 
       selected_values_r <- shiny::reactive({
-        print(current_distribution_rv())
         if (distribution_id_r() == current_distribution_id_r()) {
           distribution_helper$dist_to_params(current_distribution_rv())
         } else {

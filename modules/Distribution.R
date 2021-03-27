@@ -2,7 +2,7 @@ Distribution <- R6::R6Class(
   classname = "Distribution",
   public = list(
     dist_to_id = function(distribution) {
-      dist_cls <- class(distribution[[1]])[1]
+      dist_cls <- class(distribution)[1]
 
       # Extracts everything after the first _
       stringr::str_extract(dist_cls, "(?<=_).*$")
@@ -24,9 +24,16 @@ Distribution <- R6::R6Class(
     },
 
     dist_to_params = function(distribution) {
-      x <- as.numeric(distribution[[1]])
-      names(x) <- names(distribution[[1]])
+      x <- as.numeric(distribution)
+      names(x) <- names(distribution)
       x
+    },
+
+    dist_to_trace = function(distribution,
+                             type = c("d", "p", "q"),
+                             limits = c(0, 10)
+    ) {
+
     },
 
     get_choices = function() {
@@ -60,7 +67,7 @@ Distribution <- R6::R6Class(
       do.call(
         func[[1]],
         as.list(param_vals)
-      )
+      )[[1]]
     },
 
     get_random_param_value = function(param_id) {
@@ -71,8 +78,8 @@ Distribution <- R6::R6Class(
       switch (
         restrictions,
         "no" = round(runif(1, -5, 5), digits = 2),
-        "nn" = round(runif(1, 0, 10), digits = 2),
-        "pos" = round(runif(1, 1, 10), digits = 2),
+        "nn" =,
+        "pos" =,
         "pos_int" = sample(1:20, 1),
         "prob" = sample(seq(0, 1, length.out = 11), 1)
       )

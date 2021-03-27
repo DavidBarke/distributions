@@ -14,8 +14,8 @@ body_ui <- function(id) {
       drag_to_ui(
         id = ns("drag_to")
       ),
-      shiny::column(
-        width = 6
+      plot_ui(
+        id = ns("plot")
       )
     )
   )
@@ -50,9 +50,11 @@ body_server <- function(id, .values) {
         ]
       })
 
-      shiny::observe({
-        print(active_distributions_r())
-      })
+      plot_server(
+        id = "plot",
+        .values = .values,
+        distributions_r = active_distributions_r
+      )
     }
   )
 }

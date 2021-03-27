@@ -48,7 +48,7 @@ distribution_modifier_server <- function(id, .values) {
         do.call(
           what = distribution_helper$get_func(distribution_id_r()),
           args = params_return$params_r()
-        )
+        )[[1]]
       })
 
       return_list <- list(

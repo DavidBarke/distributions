@@ -82,10 +82,6 @@ distribution_manager_server <- function(id, .values, add_r) {
         do.call(c, distributions)
       })
 
-      shiny::observe({
-        print(distributions_r())
-      })
-
       return_list <- list(
         distributions_r = distributions_r
       )
