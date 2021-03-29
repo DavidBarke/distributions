@@ -51,7 +51,7 @@ update_distribution_input <- function(inputId,
 ) {
   msg <- distribution_helper$dist_to_msg(value)
 
-  msg <- list(
+  msg <- c(
     action = "update",
     msg
   )
