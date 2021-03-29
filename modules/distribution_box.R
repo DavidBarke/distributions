@@ -48,10 +48,14 @@ distribution_box_server <- function(id,
         params <- shiny::req(input$distribution)$distribution_param_values
         names(params) <- names(param_names)
 
-        do.call(
+        x <- do.call(
           distribution_helper$get_func(distribution_id_r()),
           as.list(params)
         )
+
+        x[[1]]$color <- input$color
+
+        x
       })
 
       distribution_el_r <- shiny::reactive({

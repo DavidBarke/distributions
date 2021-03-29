@@ -76,7 +76,9 @@ Distribution <- R6::R6Class(
         p,
         x = x,
         y = y,
+        color = I(distribution$color),
         type = if (discrete) "bar" else "scatter",
+        mode = if (discrete) NULL else "lines",
         name = capture.output(distribution)
       )
     },

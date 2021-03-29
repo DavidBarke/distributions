@@ -62,10 +62,6 @@ body_server <- function(id, .values) {
         ]
       })
 
-      shiny::observe({
-        print(active_distributions_r())
-      })
-
       plot_server(
         id = "plot",
         .values = .values,
