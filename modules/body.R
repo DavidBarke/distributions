@@ -3,19 +3,31 @@ body_ui <- function(id) {
 
   htmltools::tagList(
     shiny::fluidRow(
-      drag_from_ui(
-        id = ns("drag_from"),
-        # distribution_manager displays initial distributions, further
-        # distributions are inserted to drag_from
-        distribution_manager_ui(
-          id = ns("distribution_manager")
+      shiny::column(
+        width = 6,
+        bin_drop_zone_ui(
+          id = ns("bin_drop_zone")
+        ),
+        shiny::fluidRow(
+          shiny::column(
+            width = 6,
+            inactive_drop_zone_ui(
+              id = ns("inactive_drop_zone")
+            )
+          ),
+          shiny::column(
+            width = 6,
+            active_drop_zone_ui(
+              id = ns("active_drop_zone")
+            )
+          )
         )
       ),
-      drag_to_ui(
-        id = ns("drag_to")
-      ),
-      plot_ui(
-        id = ns("plot")
+      shiny::column(
+        width = 6,
+        plot_ui(
+          id = ns("plot")
+        )
       )
     )
   )
@@ -31,23 +43,27 @@ body_server <- function(id, .values) {
       distribution_manager_return <- distribution_manager_server(
         id = "distribution_manager",
         .values = .values,
-        add_r = drag_from_return$add_r
+        add_r = inactive_return$add_r
       )
 
-      drag_from_return <- drag_from_server(
-        id = "drag_from",
+      inactive_return <- inactive_drop_zone_server(
+        id = "inactive_drop_zone",
         .values = .values
       )
 
-      drag_to_return <- drag_to_server(
-        id = "drag_to",
+      active_return <- active_drop_zone_server(
+        id = "active_drop_zone",
         .values = .values
       )
 
       active_distributions_r <- shiny::reactive({
         distribution_manager_return$distributions_r()[
-          drag_to_return$active_distribution_indices_r()
+          active_return$active_distribution_indices_r()
         ]
+      })
+
+      shiny::observe({
+        print(active_distributions_r())
       })
 
       plot_server(

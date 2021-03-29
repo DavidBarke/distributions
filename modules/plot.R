@@ -1,11 +1,8 @@
 plot_ui <- function(id) {
   ns <- shiny::NS(id)
 
-  shiny::column(
-    width = 6,
-    plotly::plotlyOutput(
-      outputId = ns("plot")
-    )
+  plotly::plotlyOutput(
+    outputId = ns("plot")
   )
 }
 

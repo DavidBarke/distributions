@@ -52,7 +52,7 @@ distribution_manager_server <- function(id, .values, add_r) {
       shiny::observeEvent(add_r(), {
         index <- distribution_indices_rv() + 1
         shiny::insertUI(
-          selector = .values$drag_from_id,
+          selector = .values$inactive_dz_id,
           where = "afterBegin",
           ui = distribution_box_ui(
             id = ns("distribution" %_% index),

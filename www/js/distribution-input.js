@@ -45,7 +45,14 @@ $.extend(binding, {
   },
 
   receiveMessage: function(el, data) {
-    this.setValue(el, data);
+    console.log(data.action);
+    if (data.action === "update") {
+      this.setValue(el, data);
+    }
+
+    if (data.action === "remove") {
+      this.remove(el);
+    }
   },
 
   subscribe: function(el, callback) {
@@ -69,6 +76,14 @@ $.extend(binding, {
 
   unsubscribe: function(el) {
     $(el).off(".distribution-input");
+  },
+
+  remove: function(el) {
+    var $target = $(el).closest(".distribution-box");
+    $target.hide(400, function() {
+      $target.remove();
+    });
+    this.unsubscribe(el);
   },
 
   getDistributionName: function(distributionId) {

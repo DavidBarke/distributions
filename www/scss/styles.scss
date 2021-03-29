@@ -40,6 +40,17 @@ $primary: rgb(0, 123, 255);
   overflow-x: clip;
 }
 
+.drop-zone-trash {
+  height: 50px;
+  margin-bottom: 20px;
+  position: relative;
+
+  .drop-zone-title {
+    position: absolute;
+    width: 100%;
+  }
+}
+
 /* Color Input */
 
 .color-input input {
@@ -74,15 +85,6 @@ $primary: rgb(0, 123, 255);
 
   .badge {
     cursor: pointer;
-  }
-
-  .distribution-remove {
-    color: white;
-
-    i {
-      padding: 5px;
-      cursor: pointer;
-    }
   }
 }
 

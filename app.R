@@ -17,6 +17,9 @@ sass::sass(
 distribution_helper <- Distribution$new()
 
 ui <- htmltools::tagList(
+    htmltools::includeScript("www/js/distribution-input.js"),
+    htmltools::includeScript("www/js/color-input.js"),
+    htmltools::includeScript("www/js/remove-icon.js"),
     htmltools::includeCSS("www/css/styles.css"),
     bs4Dash::bs4DashPage(
         header = bs4Dash::bs4DashNavbar(

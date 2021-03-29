@@ -21,11 +21,10 @@ distribution_box_ui <- function(id,
         inputId = ns("distribution"),
         value = value
       )
-    ),
-    htmltools::div(
-      class = "distribution-remove",
-      shiny::icon("times")
     )
+    # remove_icon(
+    #   inputId = ns("remove")
+    # )
   )
 }
 
@@ -52,16 +51,20 @@ distribution_box_server <- function(id,
         do.call(
           distribution_helper$get_func(distribution_id_r()),
           as.list(params)
-        )[[1]]
+        )
+      })
+
+      distribution_el_r <- shiny::reactive({
+        distribution_r()[[1]]
       })
 
       shiny::observeEvent(input$distribution_click, {
-        distribution_modifier_return$current_distribution_rv(distribution_r())
+        distribution_modifier_return$current_distribution_rv(distribution_el_r())
 
         shiny::showModal(shiny::modalDialog(
           title = "Modify Distribution",
           distribution_modifier_ui_proxy(
-            current_distribution = distribution_r()
+            current_distribution = distribution_el_r()
           ),
           footer = htmltools::tagList(
             shiny::uiOutput(
@@ -92,6 +95,31 @@ distribution_box_server <- function(id,
         update_distribution_input(
           inputId = "distribution",
           value = distribution_modifier_return$distribution_r()
+        )
+      })
+
+      shiny::observeEvent(input$remove, {
+        shiny::showModal(shiny::modalDialog(
+          title = "Remove distribution",
+          footer = htmltools::tagList(
+            shiny::actionButton(
+              inputId = ns("confirm_remove"),
+              label = "Confirm",
+              icon = shiny::icon("check")
+            ),
+            shiny::modalButton(
+              label = "Dismiss",
+              icon = shiny::icon("times")
+            )
+          )
+        ))
+      })
+
+      shiny::observeEvent(input$confirm_remove, {
+        shiny::removeModal()
+
+        remove_distribution_input(
+          inputId = "distribution"
         )
       })
 

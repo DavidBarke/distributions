@@ -1,6 +1,7 @@
-drop_zone <- function(..., id, label) {
+drop_zone <- function(..., id, label, class = NULL) {
   htmltools::div(
     class = "drop-zone",
+    class = class,
     htmltools::div(
       class = "drop-zone-header",
       htmltools::h3(

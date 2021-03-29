@@ -1,16 +1,13 @@
-drag_to_ui <- function(id) {
+active_drop_zone_ui <- function(id) {
   ns <- shiny::NS(id)
 
   htmltools::tagList(
-    shiny::column(
-      width = 3,
-      drop_zone(
-        id = ns("drag_to"),
-        label = "Active Distributions"
-      )
+    drop_zone(
+      id = ns("dz"),
+      label = "Active Distributions"
     ),
     sortable::sortable_js(
-      css_id = ns("drag_to"),
+      css_id = ns("dz"),
       options = sortable::sortable_options(
         group = list(
           name = "group",
@@ -23,7 +20,7 @@ drag_to_ui <- function(id) {
   )
 }
 
-drag_to_server <- function(id, .values) {
+active_drop_zone_server <- function(id, .values) {
   shiny::moduleServer(
     id,
     function(input, output, session) {

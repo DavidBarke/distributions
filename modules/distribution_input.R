@@ -51,5 +51,21 @@ update_distribution_input <- function(inputId,
 ) {
   msg <- distribution_helper$dist_to_msg(value)
 
+  msg <- list(
+    action = "update",
+    msg
+  )
+
+  session$sendInputMessage(inputId, msg)
+}
+
+remove_distribution_input <- function(inputId,
+                                      session = shiny::getDefaultReactiveDomain()
+
+) {
+  msg <- list(
+    action = "remove"
+  )
+
   session$sendInputMessage(inputId, msg)
 }
