@@ -16,11 +16,8 @@ Distribution <- R6::R6Class(
     },
 
     dist_to_name = function(distribution) {
-      self$id_to_name(
-        self$dist_to_id(
-          distribution
-        )
-      )
+      id <- self$dist_to_id(distribution)
+      names(private$choices[private$choices == id])
     },
 
     dist_to_params = function(distribution) {
@@ -29,28 +26,58 @@ Distribution <- R6::R6Class(
       x
     },
 
-    dist_to_trace = function(distribution,
-                             type = c("d", "p", "q"),
-                             limits = c(0, 10)
+    dist_to_support = function(distribution) {
+      id <- self$dist_to_id(distribution)
+      support_type <- private$support_type[[id]]
+      private$support_fun[[support_type]](distribution)
+    },
+
+    plot_dists = function(distributions, type = c("d", "p"), limits = c(0, 10)) {
+      type <- match.arg(type)
+
+      p <- plotly::plot_ly(type = "scatter", mode = "lines")
+
+      for (distribution in distributions) {
+        p <- self$add_dist_trace(
+          p,
+          distribution = distribution,
+          type = type,
+          limits = limits
+        )
+      }
+
+      p
+    },
+
+    add_dist_trace = function(p,
+                              distribution,
+                              type = c("d", "p"),
+                              limits = c(0, 10)
     ) {
       type <- match.arg(type)
 
       discrete <- self$is_discrete(distribution)
+      support <- self$dist_to_support(distribution)
 
-      # Get S3 generic
-      to_trace_fun <- if (discrete) {
-        dist_to_trace_discrete
-      } else {
-        dist_to_trace_continuous
-      }
+      # Determine plotting positions on x axis
+      x <- get_trace_x(
+        limits = limits,
+        support = support,
+        discrete = discrete
+      )
 
-      # Dispatch
-      class(distribution) <- c(class(distribution), type)
-
-      to_trace_fun(
+      y <- get_trace_y(
         distribution = distribution,
-        type = type,
-        limits = sort(limits)
+        x = x,
+        type = type
+      )
+
+      plotly::add_trace(
+        p,
+        x = x,
+        y = y,
+        type = if (discrete) "bar" else "scatter",
+        name = capture.output(distribution)
       )
     },
 
@@ -101,10 +128,6 @@ Distribution <- R6::R6Class(
         "pos_int" = sample(1:20, 1),
         "prob" = sample(seq(0, 1, length.out = 11), 1)
       )
-    },
-
-    id_to_name = function(id) {
-      names(private$choices[private$choices == id])
     },
 
     # returns logical
@@ -158,14 +181,10 @@ Distribution <- R6::R6Class(
       "Geometric" = "geometric",
       "Gumbel" = "gumbel",
       "Hypergeometric" = "hypergeometric",
-      "Inverse Exponential" = "inverse_exponential",
-      "Inverse Gamma" = "inverse_gamma",
-      "Inverse Gaussian" = "inverse_gaussian",
       "Logarithmic" = "logarithmic",
       "Logistic" = "logistic",
       "Negative Binomial" = "negbin",
       "Normal" = "normal",
-      "Pareto" = "pareto",
       "Poisson" = "poisson",
       "Student's t" = "student_t",
       "Uniform" = "uniform",
@@ -182,6 +201,47 @@ Distribution <- R6::R6Class(
       "poisson"
     ),
 
+    support_type = list(
+      bernoulli = "zeroone",
+      beta = "zeroone",
+      binomial = "binomial",
+      cauchy = "all",
+      chisq = "nn",
+      degenerate = "binomial",
+      exponential = "nn",
+      f = "nn",
+      gamma = "nn",
+      geometric = "nn",
+      gumbel = "all",
+      hypergeometric = "hypergeometric",
+      logarithmic = "oneinf",
+      logistic = "all",
+      negbin = "nn",
+      normal = "all",
+      poisson = "nn",
+      student_t = "all",
+      uniform = "uniform",
+      weibull = "nn"
+    ),
+
+    support_fun = list(
+      all = function(distribution) c(-Inf, Inf),
+      binomial = function(distribution) c(0, distribution$n),
+      degenerate = function(distribution) distribution$x,
+      hypergeometric = function(distribution) {
+        c(
+          max(0, distribution$k - distribution$n),
+          min(distribution$k, distribution$m)
+        )
+      },
+      nn = function(distribution) c(0, Inf),
+      oneinf = function(distribution) c(1, Inf),
+      uniform = function(distribution) {
+        c(distribution$l, distribution$u)
+      },
+      zeroone = function(distribution) c(0, 1)
+    ),
+
     funcs = list(
       bernoulli = distributional::dist_bernoulli,
       beta = distributional::dist_beta,
@@ -195,14 +255,10 @@ Distribution <- R6::R6Class(
       geometric = distributional::dist_geometric,
       gumbel = distributional::dist_gumbel,
       hypergeometric = distributional::dist_hypergeometric,
-      inverse_exponential = distributional::dist_inverse_exponential,
-      inverse_gamma = distributional::dist_inverse_gamma,
-      inverse_gaussian = distributional::dist_inverse_gaussian,
       logarithmic = distributional::dist_logarithmic,
       logistic = distributional::dist_logistic,
       negbin = distributional::dist_negative_binomial,
       normal = distributional::dist_normal,
-      pareto = distributional::dist_pareto,
       poisson = distributional::dist_poisson,
       student_t = distributional::dist_student_t,
       uniform = distributional::dist_uniform,
@@ -254,17 +310,6 @@ Distribution <- R6::R6Class(
         "n" = "n",
         "k" = "k"
       ),
-      inverse_exponential = list(
-        "rate" = "&#x3BB"
-      ),
-      inverse_gamma = list(
-        "shape" = "k",
-        "scale" = "&#x3B2"
-      ),
-      inverse_gaussian = list(
-        "mean" = "&#x3BC",
-        "shape" = "&#x3BB"
-      ),
       logarithmic = list(
         "prob" = "p"
       ),
@@ -279,10 +324,6 @@ Distribution <- R6::R6Class(
       normal = list(
         "mu" = "&#x3BC",
         "sigma" = "&#x3C3"
-      ),
-      pareto = list(
-        "shape" = "x",
-        "scale" = "&#x3B1"
       ),
       poisson = list(
         "lambda" = "&#x3BB"

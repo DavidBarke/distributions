@@ -1,8 +1,8 @@
 distribution_input <- function(inputId, value) {
   distribution_id <- distribution_helper$dist_to_id(value)
-  distribution_name <- distribution_helper$id_to_name(distribution_id)
+  distribution_name <- distribution_helper$dist_to_name(value)
   distribution_params <- distribution_helper$dist_to_params(value)
-  distribution_param_names <- distribution_helper$get_params(distribution_id)
+  distribution_param_names <- distribution_helper$get_param_names(distribution_id)
 
   param_bages <- purrr::map2(
     distribution_param_names, distribution_params,

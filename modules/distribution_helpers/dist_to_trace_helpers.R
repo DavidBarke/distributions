@@ -1,19 +1,21 @@
-discrete_x <- function(type = c("d", "p", "q"), limits) {
-  type <- match.arg(type)
+get_trace_x <- function(limits = c(0, 1), support = c(-Inf, Inf), discrete = FALSE, n = 100) {
+  x_seq_start <- max(limits[1], support[1])
+  x_seq_end <- min(limits[2], support[2])
 
-  if (type %in% c("d", "p")) {
-
+  x_seq <- if (discrete) {
+    x_seq_start <- ceiling(x_seq_start)
+    x_seq_end <- floor(x_seq_end)
+    if (x_seq_start > x_seq_end) return(numeric())
+    x_seq_start:x_seq_end
   } else {
-
+    seq(x_seq_start, x_seq_end, length.out = n)
   }
 }
 
-continuous_x <- function(type = c("d", "p", "q"), limits) {
+get_trace_y = function(distribution, x, type = c("d", "p")) {
   type <- match.arg(type)
 
-  if (type %in% c("d", "p")) {
+  y_fun <- if (type == "d") density else distributional::cdf
 
-  } else {
-
-  }
+  y_fun(distribution, x)
 }
