@@ -20,9 +20,10 @@ distribution_manager_server <- function(id, .values, add_r) {
 
       ns <- session$ns
 
-      initial_size <- 25
+      scale_size <- 20
+      color_scale <- scales::col_numeric(palette(), c(0, scale_size - 1))
 
-      distribution_indices_rv <- shiny::reactiveVal(initial_size)
+      distribution_indices_rv <- shiny::reactiveVal(0)
 
       envir <- new.env()
       envir$dist_return <- list()
@@ -37,17 +38,6 @@ distribution_manager_server <- function(id, .values, add_r) {
         .values = .values
       )
 
-      # Initial distribution_boxes
-      purrr::walk(1:initial_size, ~ {
-        envir$dist_return[[.]] <- distribution_box_server(
-          id = "distribution" %_% .,
-          .values = .values,
-          distribution_modifier_return = distribution_modifier_return,
-          distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
-        )
-      })
-
-      color_scale <- scales::col_numeric(palette(), c(1, initial_size))
       # New distribution_boxes
       shiny::observeEvent(add_r(), {
         index <- distribution_indices_rv() + 1
@@ -56,7 +46,7 @@ distribution_manager_server <- function(id, .values, add_r) {
           where = "afterBegin",
           ui = distribution_box_ui(
             id = ns("distribution" %_% index),
-            color = color_scale(index %% initial_size),
+            color = color_scale(index %% scale_size),
             index = index,
             value = distribution_helper$get_random_distribution()
           )

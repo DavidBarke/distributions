@@ -40,7 +40,7 @@ body_server <- function(id, .values) {
 
       ns <- session$ns
 
-      distribution_manager_return <- distribution_manager_server(
+      .values$distribution_manager <- distribution_manager_server(
         id = "distribution_manager",
         .values = .values,
         add_r = inactive_return$add_r
@@ -57,7 +57,7 @@ body_server <- function(id, .values) {
       )
 
       active_distributions_r <- shiny::reactive({
-        distribution_manager_return$distributions_r()[
+        .values$distribution_manager$distributions_r()[
           active_return$active_distribution_indices_r()
         ]
       })
