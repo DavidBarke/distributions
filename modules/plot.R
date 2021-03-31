@@ -9,6 +9,9 @@ plot_ui <- function(id) {
     ),
     plotly::plotlyOutput(
       outputId = ns("plot")
+    ),
+    x_limits_ui(
+      id = ns("x_limits")
     )
   )
 }
@@ -24,9 +27,13 @@ plot_server <- function(id, .values, distributions_r) {
         distribution_helper$plot_dists(
           distributions = distributions_r(),
           input$type,
-          limits = c(-5, 5)
+          limits = x_limits_return$limits_r()
         )
       })
+
+      x_limits_return <- x_limits_server(
+        id = "x_limits"
+      )
     }
   )
 }

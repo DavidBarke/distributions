@@ -2,9 +2,13 @@ active_drop_zone_ui <- function(id) {
   ns <- shiny::NS(id)
 
   htmltools::tagList(
-    drop_zone(
-      id = ns("dz"),
-      label = "Active Distributions"
+    bs4Dash::box(
+      width = NULL,
+      collapsible = FALSE,
+      title = "Active Distributions",
+      htmltools::div(
+        id = ns("dz")
+      )
     ),
     sortable::sortable_js(
       css_id = ns("dz"),

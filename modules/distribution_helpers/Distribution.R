@@ -1,54 +1,6 @@
 Distribution <- R6::R6Class(
   classname = "Distribution",
   public = list(
-    dist_to_id = function(distribution) {
-      dist_cls <- class(distribution)[1]
-
-      # Extracts everything after the first _
-      stringr::str_extract(dist_cls, "(?<=_).*$")
-    },
-
-    dist_to_msg = function(distribution) {
-      list(
-        distribution_id = self$dist_to_id(distribution),
-        distribution_param_values = unname(self$dist_to_params(distribution))
-      )
-    },
-
-    dist_to_name = function(distribution) {
-      id <- self$dist_to_id(distribution)
-      names(private$choices[private$choices == id])
-    },
-
-    dist_to_params = function(distribution) {
-      x <- as.numeric(distribution)
-      names(x) <- names(distribution)
-      x
-    },
-
-    dist_to_support = function(distribution) {
-      id <- self$dist_to_id(distribution)
-      support_type <- private$support_type[[id]]
-      private$support_fun[[support_type]](distribution)
-    },
-
-    plot_dists = function(distributions, type = c("d", "p"), limits = c(0, 10)) {
-      type <- match.arg(type)
-
-      p <- plotly::plot_ly(type = "scatter", mode = "lines")
-
-      for (distribution in distributions) {
-        p <- self$add_dist_trace(
-          p,
-          distribution = distribution,
-          type = type,
-          limits = limits
-        )
-      }
-
-      p
-    },
-
     add_dist_trace = function(p,
                               distribution,
                               type = c("d", "p"),
@@ -79,8 +31,48 @@ Distribution <- R6::R6Class(
         color = I(distribution$color),
         type = if (discrete) "bar" else "scatter",
         mode = if (discrete) NULL else "lines",
-        name = capture.output(distribution)
+        name = self$dist_to_trace_name(distribution)
       )
+    },
+
+    dist_to_id = function(distribution) {
+      dist_cls <- class(distribution)[1]
+
+      # Extracts everything after the first _
+      stringr::str_extract(dist_cls, "(?<=_).*$")
+    },
+
+    dist_to_msg = function(distribution) {
+      list(
+        distribution_id = self$dist_to_id(distribution),
+        distribution_param_values = unname(self$dist_to_params(distribution))
+      )
+    },
+
+    dist_to_name = function(distribution) {
+      id <- self$dist_to_id(distribution)
+      names(private$choices[private$choices == id])
+    },
+
+    dist_to_params = function(distribution) {
+      distribution["color"] <- NULL
+      x <- as.numeric(distribution)
+      names(x) <- names(distribution)
+      x
+    },
+
+    dist_to_support = function(distribution) {
+      id <- self$dist_to_id(distribution)
+      support_type <- private$support_type[[id]]
+      private$support_fun[[support_type]](distribution)
+    },
+
+    dist_to_trace_name = function(distribution) {
+      id <- self$dist_to_id(distribution)
+
+      if (id == "degenerate") return(distribution$x)
+
+      capture.output(distribution)
     },
 
     get_choices = function() {
@@ -151,6 +143,23 @@ Distribution <- R6::R6Class(
       self$dist_to_id(distribution) %in% private$discrete
     },
 
+    plot_dists = function(distributions, type = c("d", "p"), limits = c(0, 10)) {
+      type <- match.arg(type)
+
+      p <- plotly::plot_ly(type = "scatter", mode = "lines")
+
+      for (distribution in distributions) {
+        p <- self$add_dist_trace(
+          p,
+          distribution = distribution,
+          type = type,
+          limits = limits
+        )
+      }
+
+      p
+    },
+
     # calls shiny::validate for UI
     validate_param_value = function(value, param_id, distribution_id) {
       # distribution_id is currently unused
@@ -209,7 +218,7 @@ Distribution <- R6::R6Class(
       binomial = "binomial",
       cauchy = "all",
       chisq = "nn",
-      degenerate = "binomial",
+      degenerate = "degenerate",
       exponential = "nn",
       f = "nn",
       gamma = "nn",
@@ -229,7 +238,7 @@ Distribution <- R6::R6Class(
     support_fun = list(
       all = function(distribution) c(-Inf, Inf),
       binomial = function(distribution) c(0, distribution$n),
-      degenerate = function(distribution) distribution$x,
+      degenerate = function(distribution) c(distribution$x, distribution$x),
       hypergeometric = function(distribution) {
         c(
           max(0, distribution$k - distribution$n),

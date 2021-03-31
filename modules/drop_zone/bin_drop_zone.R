@@ -2,10 +2,11 @@ bin_drop_zone_ui <- function(id) {
   ns <- shiny::NS(id)
 
   htmltools::tagList(
-    htmltools::div(
-      class = "drop-zone drop-zone-trash",
-      htmltools::h3(
-        class = "drop-zone-title",
+    bs4Dash::box(
+      width = NULL,
+      collapsible = FALSE,
+      title = htmltools::div(
+        class = "drop-zone-trash-title",
         shiny::icon("trash")
       ),
       htmltools::div(

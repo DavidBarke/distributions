@@ -25,7 +25,8 @@ ui <- htmltools::tagList(
         header = bs4Dash::bs4DashNavbar(
             title = bs4Dash::bs4DashBrand(
                 title = "Distributions"
-            )
+            ),
+            status = "teal"
         ),
         sidebar = bs4Dash::bs4DashSidebar(
             disable = TRUE

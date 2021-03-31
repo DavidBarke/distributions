@@ -2,9 +2,10 @@ inactive_drop_zone_ui <- function(id, ...) {
   ns <- shiny::NS(id)
 
   htmltools::tagList(
-    drop_zone(
-      id = ns("dz"),
-      label = htmltools::tagList(
+    bs4Dash::box(
+      width = NULL,
+      collapsible = FALSE,
+      title = htmltools::tagList(
         "Inactive Distributions",
         htmltools::span(
           id = ns("add"),
@@ -12,7 +13,9 @@ inactive_drop_zone_ui <- function(id, ...) {
           shiny::icon("plus")
         )
       ),
-      ...
+      htmltools::div(
+        id = ns("dz")
+      )
     ),
     sortable::sortable_js(
       css_id = ns("dz"),
