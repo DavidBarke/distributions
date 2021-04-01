@@ -1,7 +1,11 @@
 plot_ui <- function(id) {
   ns <- shiny::NS(id)
 
-  htmltools::tagList(
+  bs4Dash::box(
+    width = NULL,
+    title = "Visualization",
+    solidHeader = TRUE,
+    status = "primary",
     shiny::selectInput(
       inputId = ns("type"),
       label = "Distribution Function",

@@ -2,20 +2,15 @@ bin_drop_zone_ui <- function(id) {
   ns <- shiny::NS(id)
 
   htmltools::tagList(
-    bs4Dash::box(
-      width = NULL,
-      collapsible = FALSE,
-      title = htmltools::div(
-        class = "drop-zone-trash-title",
-        shiny::icon("trash")
-      ),
-      htmltools::div(
-        id = ns("dz")
-      )
+    htmltools::div(
+      class = "bin-drop-zone",
+      shiny::icon("trash"),
+      id = ns("dz")
     ),
     sortable::sortable_js(
       css_id = ns("dz"),
       options = sortable::sortable_options(
+        ghostClass = "sortable-ghost-hidden",
         group = list(
           name = "group",
           pull = TRUE,

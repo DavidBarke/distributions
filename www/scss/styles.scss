@@ -5,57 +5,11 @@ $border-color: #ccc;
 $spacing: 5px;
 $primary: rgb(0, 123, 255);
 
-/* Drag & Drop */
+/* Bin Drop Zone */
 
-.drop-zone {
-  border: 1px solid $border-color;
-  padding: 10px;
-  background-color: #eee;
-  border-radius: 10px;
-  /* display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  flex-direction: column;
-  height: 100%;*/
-}
-
-.drop-zone-header {
-  border-bottom: 1px solid $border-color;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-}
-
-.drop-zone-title {
-  font-size: 1.1rem;
-  font-weight: 400;
-  margin: 0;
-  text-align: center;
-}
-
-.drop-zone-body {
-  max-height: unquote("calc(100vh - 220px)");
-  overflow-y: auto;
-  overflow-x: clip;
-}
-
-.drop-zone-trash {
-  height: 50px;
-  margin-bottom: 20px;
-  position: relative;
-
-  .drop-zone-title {
-    position: absolute;
-    width: 100%;
-  }
-}
-
-.card-title {
-  width: 100%;
-}
-
-.drop-zone-trash-title {
+.bin-drop-zone {
+  padding: 1rem;
+  color: black;
   text-align: center;
 }
 
@@ -121,4 +75,10 @@ $primary: rgb(0, 123, 255);
 
 .error {
   color: red;
+}
+
+/* Sortable */
+
+.sortable-ghost-hidden {
+  display: none;
 }

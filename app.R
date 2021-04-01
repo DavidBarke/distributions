@@ -26,7 +26,7 @@ ui <- htmltools::tagList(
             title = bs4Dash::bs4DashBrand(
                 title = "Distributions"
             ),
-            status = "teal"
+            status = "primary"
         ),
         sidebar = bs4Dash::bs4DashSidebar(
             disable = TRUE
@@ -34,6 +34,18 @@ ui <- htmltools::tagList(
         body = bs4Dash::bs4DashBody(
             body_ui(
                 id = "body"
+            )
+        ),
+        footer = bs4Dash::bs4DashFooter(
+            left = bin_drop_zone_ui(
+                id = "bin_drop_zone"
+            ),
+            fixed = TRUE
+        ),
+        freshTheme = fresh::create_theme(
+            fresh::bs4dash_vars(
+                link_color = "white",
+                main_footer_padding = 0
             )
         )
     )

@@ -5,9 +5,6 @@ body_ui <- function(id) {
     shiny::fluidRow(
       shiny::column(
         width = 6,
-        bin_drop_zone_ui(
-          id = ns("bin_drop_zone")
-        ),
         shiny::fluidRow(
           shiny::column(
             width = 6,

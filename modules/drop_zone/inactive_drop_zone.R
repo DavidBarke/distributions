@@ -5,6 +5,8 @@ inactive_drop_zone_ui <- function(id, ...) {
     bs4Dash::box(
       width = NULL,
       collapsible = FALSE,
+      solidHeader = TRUE,
+      status = "primary",
       title = htmltools::tagList(
         "Inactive Distributions",
         htmltools::span(
