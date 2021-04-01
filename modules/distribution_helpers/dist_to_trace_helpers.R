@@ -12,10 +12,29 @@ get_trace_x <- function(limits = c(0, 1), support = c(-Inf, Inf), discrete = FAL
   }
 }
 
-get_trace_y = function(distribution, x, type = c("d", "p")) {
+get_trace_y = function(distribution, x, type = c("d", "p", "s", "h", "ch")) {
   type <- match.arg(type)
 
-  y_fun <- if (type == "d") density else distributional::cdf
+  y_fun <- switch(
+    type,
+    "d" = stats::density,
+    "p" = distributional::cdf,
+    "s" = survival_fun,
+    "h" = hazard_fun,
+    "ch" = cumulative_hazard_fun
+  )
 
   y_fun(distribution, x)
+}
+
+survival_fun <- function(d, x) {
+  1 - distributional::cdf(d, x)
+}
+
+hazard_fun <- function(d, x) {
+  stats::density(d, x) / survival_fun(d, x)
+}
+
+cumulative_hazard_fun <- function(d, x) {
+  -log(survival_fun(d, x))
 }

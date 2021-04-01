@@ -13,6 +13,10 @@ $primary: rgb(0, 123, 255);
   text-align: center;
 }
 
+.bin-drop-zone.hover {
+  background-color: red;
+}
+
 /* Color Input */
 
 .color-input input {

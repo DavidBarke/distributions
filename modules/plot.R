@@ -9,7 +9,7 @@ plot_ui <- function(id) {
     shiny::selectInput(
       inputId = ns("type"),
       label = "Distribution Function",
-      choices = c("Density" = "d", "Probability" = "p")
+      choices = distribution_helper$get_func_choices()
     ),
     plotly::plotlyOutput(
       outputId = ns("plot")

@@ -1,37 +1,16 @@
 Distribution <- R6::R6Class(
   classname = "Distribution",
   public = list(
-    add_dist_trace = function(p,
-                              distribution,
-                              type = c("d", "p"),
-                              limits = c(0, 10)
-    ) {
-      type <- match.arg(type)
+    initialize = function() {
+      private$plotter <- DistributionPlotter$new(self)
 
-      discrete <- self$is_discrete(distribution)
-      support <- self$dist_to_support(distribution)
-
-      # Determine plotting positions on x axis
-      x <- get_trace_x(
-        limits = limits,
-        support = support,
-        discrete = discrete
-      )
-
-      y <- get_trace_y(
-        distribution = distribution,
-        x = x,
-        type = type
-      )
-
-      plotly::add_trace(
-        p,
-        x = x,
-        y = y,
-        color = I(distribution$color),
-        type = if (discrete) "bar" else "scatter",
-        mode = if (discrete) NULL else "lines",
-        name = self$dist_to_trace_name(distribution)
+      private$func_choices <- c("d", "p", "s", "h", "ch")
+      names(private$func_choices) <- c(
+        "Probability Density Function f(x)",
+        "Cumulative Distribution Function F(x)",
+        "Survival Function S(x)",
+        "Hazard Function \u03BB(x)",
+        "Cumulative Hazard Function \u039B(x)"
       )
     },
 
@@ -81,6 +60,10 @@ Distribution <- R6::R6Class(
 
     get_func = function(id) {
       private$funcs[[id]]
+    },
+
+    get_func_choices = function() {
+      private$func_choices
     },
 
     get_params = function(id) {
@@ -143,21 +126,15 @@ Distribution <- R6::R6Class(
       self$dist_to_id(distribution) %in% private$discrete
     },
 
-    plot_dists = function(distributions, type = c("d", "p"), limits = c(0, 10)) {
-      type <- match.arg(type)
-
-      p <- plotly::plot_ly(type = "scatter", mode = "lines")
-
-      for (distribution in distributions) {
-        p <- self$add_dist_trace(
-          p,
-          distribution = distribution,
-          type = type,
-          limits = limits
-        )
-      }
-
-      p
+    plot_dists = function(distributions,
+                          type = c("d", "p", "s", "h", "ch"),
+                          limits = c(0, 10)
+    ) {
+      private$plotter$plot(
+        distributions = distributions,
+        type = type,
+        limits = limits
+      )
     },
 
     # calls shiny::validate for UI
@@ -179,6 +156,8 @@ Distribution <- R6::R6Class(
     }
   ),
   private = list(
+    plotter = NULL, # DistributionPlotter
+
     choices = c(
       "Bernoulli" = "bernoulli",
       "Beta" = "beta",
@@ -201,6 +180,8 @@ Distribution <- R6::R6Class(
       "Uniform" = "uniform",
       "Weibull" = "weibull"
     ),
+
+    func_choices = NULL,
 
     discrete = c(
       "bernoulli",

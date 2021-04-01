@@ -16,7 +16,7 @@ bin_drop_zone_ui <- function(id) {
           pull = TRUE,
           put = TRUE
         ),
-        onAdd = htmlwidgets::JS("function (evt) { this.el.removeChild(evt.item); }")
+        onAdd = htmlwidgets::JS("function (e) { console.log('onAdd');this.el.removeChild(e.item); }")
       )
     )
   )
