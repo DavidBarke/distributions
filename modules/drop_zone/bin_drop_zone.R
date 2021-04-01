@@ -4,7 +4,7 @@ bin_drop_zone_ui <- function(id) {
   htmltools::tagList(
     htmltools::div(
       class = "bin-drop-zone",
-      shiny::icon("trash"),
+      shiny::icon("dumpster-fire"),
       id = ns("dz")
     ),
     sortable::sortable_js(

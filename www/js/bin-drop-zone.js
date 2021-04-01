@@ -4,9 +4,6 @@ $(function() {
   });
 
   $(".bin-drop-zone").on("dragleave drop", function(e) {
-    var el = $(this);
-    setTimeout(function() {
-      el.removeClass("hover");
-    }, 500);
+    $(this).removeClass("hover");
   });
 });

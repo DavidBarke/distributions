@@ -5,16 +5,44 @@ $border-color: #ccc;
 $spacing: 5px;
 $primary: rgb(0, 123, 255);
 
+/* Height */
+.content-wrapper, .content, .row, .col-sm-3, .col-sm-6, .card {
+  height: 100%;
+}
+
 /* Bin Drop Zone */
+
+@keyframes font-pulse {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .bin-drop-zone {
   padding: 1rem;
   color: black;
   text-align: center;
+  border: 1px solid transparent;
+}
+
+.bin-drop-zone * {
+  pointer-events: none;
 }
 
 .bin-drop-zone.hover {
-  background-color: red;
+  background-image: linear-gradient(to right, #ef3b36, white 50%, #ef3b36);
+  border: 1px solid red;
+  color: red;
+}
+
+.bin-drop-zone.hover i {
+  animation-name: font-pulse;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
 }
 
 /* Color Input */
