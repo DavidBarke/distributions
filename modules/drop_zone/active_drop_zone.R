@@ -35,8 +35,13 @@ active_drop_zone_server <- function(id, .values) {
 
       .values$active_dz_id <- paste0("#", ns("dz"))
 
+      .values$update_active_ids <- update_sortable_factory(
+        inputId = ns("distribution_ids"),
+        selector = .values$active_dz_id
+      )
+
       distribution_ids_r <- shiny::reactive({
-        print(input$distribution_ids) %||% character()
+        input$distribution_ids %||% character()
       })
 
       return_list <- list(

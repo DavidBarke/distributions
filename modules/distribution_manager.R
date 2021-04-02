@@ -106,12 +106,14 @@ distribution_manager_server <- function(id,
           if (msg$override) {
             shiny::removeUI(
               selector = paste(.values$active_dz_id, "*"),
-              multiple = TRUE
+              multiple = TRUE,
+              immediate = TRUE
             )
 
             shiny::removeUI(
               selector = paste(.values$inactive_dz_id, "*"),
-              multiple = TRUE
+              multiple = TRUE,
+              immediate = TRUE
             )
           }
 
@@ -123,6 +125,7 @@ distribution_manager_server <- function(id,
             shiny::insertUI(
               selector = selector,
               where = "afterBegin",
+              immediate = TRUE,
               ui = distribution_box_ui(
                 id = ns("distribution" %_% (index + offset)),
                 color = color_scale((index + offset) %% scale_size),
@@ -141,6 +144,9 @@ distribution_manager_server <- function(id,
 
           distribution_counter_rv(offset + length(msg$distributions))
         })
+
+        .values$update_active_ids()
+        .values$update_inactive_ids()
       })
 
       return_list <- list(
