@@ -51,6 +51,17 @@ navbar_right_server <- function(id, .values) {
         },
         contentType = "application/rds"
       )
+
+      shiny::observeEvent(input$load_rds, {
+        shiny::showModal(modal_upload_ui(
+          id = ns("modal_upload")
+        ))
+      })
+
+      modal_upload_server(
+        id = "modal_upload",
+        .values = .values
+      )
     }
   )
 }

@@ -33,8 +33,10 @@ active_drop_zone_server <- function(id, .values) {
 
       ns <- session$ns
 
+      .values$active_dz_id <- paste0("#", ns("dz"))
+
       distribution_ids_r <- shiny::reactive({
-        input$distribution_ids %||% character()
+        print(input$distribution_ids) %||% character()
       })
 
       return_list <- list(

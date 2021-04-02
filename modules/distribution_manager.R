@@ -36,6 +36,9 @@ distribution_manager_server <- function(id,
       # but is not adjusted when a distribution is removed
       distribution_counter_rv <- shiny::reactiveVal(0)
 
+      # This rv can be set from the outside to load distributions
+      load_rv <- shiny::reactiveVal(NULL)
+
       # One distribution_modifier for all distribution_boxes
       distribution_modifier_ui_proxy <- distribution_modifier_ui_proxy_factory(
         id = ns("distribution_modifier")
@@ -94,9 +97,56 @@ distribution_manager_server <- function(id,
         do.call(c, distributions)
       })
 
+      shiny::observeEvent(load_rv(), {
+        # load_rv contains a list of lists, where each inner list contains
+        # distributions that must be added to a specific drop zone
+        msgs <- load_rv()
+
+        purrr::walk(msgs, function(msg) {
+          if (msg$override) {
+            shiny::removeUI(
+              selector = paste(.values$active_dz_id, "*"),
+              multiple = TRUE
+            )
+
+            shiny::removeUI(
+              selector = paste(.values$inactive_dz_id, "*"),
+              multiple = TRUE
+            )
+          }
+
+          offset <- distribution_counter_rv()
+          selector <- if (msg$to == "active") .values$active_dz_id else
+            .values$inactive_dz_id
+
+          purrr::iwalk(msg$distributions, function(distribution, index) {
+            shiny::insertUI(
+              selector = selector,
+              where = "afterBegin",
+              ui = distribution_box_ui(
+                id = ns("distribution" %_% (index + offset)),
+                color = color_scale((index + offset) %% scale_size),
+                index = index + offset,
+                value = distribution
+              )
+            )
+
+            envir$dist_return[[as.character(index + offset)]] <- distribution_box_server(
+              id = "distribution" %_% (index + offset),
+              .values = .values,
+              distribution_modifier_return = distribution_modifier_return,
+              distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
+            )
+          })
+
+          distribution_counter_rv(offset + length(msg$distributions))
+        })
+      })
+
       return_list <- list(
         active_distributions_r = active_distributions_r,
-        inactive_distributions_r = inactive_distributions_r
+        inactive_distributions_r = inactive_distributions_r,
+        load_rv = load_rv
       )
 
       return(return_list)
