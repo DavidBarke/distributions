@@ -52,7 +52,8 @@ ui <- htmltools::tagList(
                 link_color = "white",
                 main_footer_padding = 0
             )
-        )
+        ),
+        dark = NULL
     )
 )
 

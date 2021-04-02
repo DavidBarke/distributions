@@ -6,8 +6,20 @@ $spacing: 5px;
 $primary: rgb(0, 123, 255);
 
 /* Height */
-.content-wrapper, .content, .row, .col-sm-3, .col-sm-6, .card {
+.wrapper, .content-wrapper, .content, .row, .overflow-scroll {
   height: 100%;
+}
+
+.card {
+  max-height: calc(100% - 95px);
+}
+
+html, body {
+  height: 100% !important;
+}
+
+.overflow-scroll .card-body {
+  overflow-y: auto;
 }
 
 /* Bin Drop Zone */

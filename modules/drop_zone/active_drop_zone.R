@@ -11,7 +11,7 @@ active_drop_zone_ui <- function(id) {
       htmltools::div(
         id = ns("dz")
       )
-    ),
+    ) %>% first_child(),
     sortable::sortable_js(
       css_id = ns("dz"),
       options = sortable::sortable_options(

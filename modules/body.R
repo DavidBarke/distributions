@@ -5,15 +5,18 @@ body_ui <- function(id) {
     shiny::fluidRow(
       shiny::column(
         width = 6,
+        class = "overflow-scroll",
         shiny::fluidRow(
           shiny::column(
             width = 6,
+            class = "overflow-scroll",
             inactive_drop_zone_ui(
               id = ns("inactive_drop_zone")
             )
           ),
           shiny::column(
             width = 6,
+            class = "overflow-scroll",
             active_drop_zone_ui(
               id = ns("active_drop_zone")
             )
