@@ -27,7 +27,10 @@ ui <- htmltools::tagList(
             title = bs4Dash::bs4DashBrand(
                 title = "Distributions"
             ),
-            status = "primary"
+            status = "primary",
+            rightUi = navbar_right_ui(
+                id = "navbar_right"
+            )
         ),
         sidebar = bs4Dash::bs4DashSidebar(
             disable = TRUE
@@ -58,6 +61,11 @@ server <- function(input, output) {
 
     body_server(
         id = "body",
+        .values = .values
+    )
+
+    navbar_right_server(
+        id = "navbar_right",
         .values = .values
     )
 }

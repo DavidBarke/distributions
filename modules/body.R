@@ -40,7 +40,8 @@ body_server <- function(id, .values) {
       .values$distribution_manager <- distribution_manager_server(
         id = "distribution_manager",
         .values = .values,
-        add_r = inactive_return$add_r
+        add_r = inactive_return$add_r,
+        active_distribution_indices_r = active_return$active_distribution_indices_r
       )
 
       inactive_return <- inactive_drop_zone_server(
@@ -53,16 +54,10 @@ body_server <- function(id, .values) {
         .values = .values
       )
 
-      active_distributions_r <- shiny::reactive({
-        .values$distribution_manager$distributions_r()[
-          active_return$active_distribution_indices_r()
-        ]
-      })
-
       plot_server(
         id = "plot",
         .values = .values,
-        distributions_r = active_distributions_r
+        distributions_r = .values$distribution_manager$active_distributions_r
       )
     }
   )

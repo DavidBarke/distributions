@@ -13,7 +13,11 @@ distribution_manager_ui <- function(id, initial_size = 25) {
   })
 }
 
-distribution_manager_server <- function(id, .values, add_r) {
+distribution_manager_server <- function(id,
+                                        .values,
+                                        add_r,
+                                        active_distribution_indices_r
+) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
@@ -72,8 +76,15 @@ distribution_manager_server <- function(id, .values, add_r) {
         do.call(c, distributions)
       })
 
+      active_distributions_r <- shiny::reactive({
+        distributions_r()[
+          active_distribution_indices_r()
+        ]
+      })
+
       return_list <- list(
-        distributions_r = distributions_r
+        distributions_r = distributions_r,
+        active_distributions_r = active_distributions_r
       )
 
       return(return_list)

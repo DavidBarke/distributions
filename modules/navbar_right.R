@@ -1,0 +1,60 @@
+navbar_right_ui <- function(id) {
+  ns <- shiny::NS(id)
+
+  # Fake dropdowns
+  htmltools::tagList(
+    dropdown_menu(
+      icon = shiny::icon("download"),
+      dropdown_download_item(
+        outputId = ns("save_rds"),
+        label = "Save as RDS"
+      ),
+      dropdown_download_item(
+        outputId = ns("save_json"),
+        label = "Save as JSON"
+      )
+    ),
+    dropdown_menu(
+      icon = shiny::icon("upload"),
+      dropdown_item(
+        inputId = ns("load_rds"),
+        label = "Load RDS",
+        icon = shiny::icon("upload")
+      ),
+      dropdown_item(
+        inputId = ns("load_json"),
+        label = "Load JSON",
+        icon = shiny::icon("upload")
+      )
+    )
+  )
+}
+
+navbar_right_server <- function(id, .values) {
+  shiny::moduleServer(
+    id,
+    function(input, output, session) {
+
+      ns <- session$ns
+
+      output$save_rds <- shiny::downloadHandler(
+        filename = filename_factory(extension = "rds"),
+        content = function(file) {
+          distributions <- .values$distribution_manager$active_distributions_r()
+          readr::write_rds(distributions, file)
+        },
+        contentType = "application/rds"
+      )
+    }
+  )
+}
+
+filename_factory <- function(extension = c("rds", "json")) {
+  extension <- match.arg(extension)
+
+  function() {
+    date <- stringr::str_replace_all(Sys.time(), "\\s", "_") %>%
+      stringr::str_replace_all(":", "-")
+    glue::glue("distributions_{date}.{extension}")
+  }
+}
