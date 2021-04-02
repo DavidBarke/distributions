@@ -20,7 +20,7 @@ active_drop_zone_ui <- function(id) {
           pull = TRUE,
           put = TRUE
         ),
-        onSort = sortable::sortable_js_capture_input(ns("distributions"))
+        onSort = sortable::sortable_js_capture_input(ns("distribution_ids"))
       )
     )
   )
@@ -33,12 +33,12 @@ active_drop_zone_server <- function(id, .values) {
 
       ns <- session$ns
 
-      active_distribution_indices_r <- shiny::reactive({
-        as.integer(input$distributions %||% integer())
+      distribution_ids_r <- shiny::reactive({
+        input$distribution_ids %||% character()
       })
 
       return_list <- list(
-        active_distribution_indices_r = active_distribution_indices_r
+        distribution_ids_r = distribution_ids_r
       )
 
       return(return_list)

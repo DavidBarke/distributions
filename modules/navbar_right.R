@@ -8,11 +8,11 @@ navbar_right_ui <- function(id) {
       dropdown_download_item(
         outputId = ns("save_rds"),
         label = "Save as RDS"
-      ),
-      dropdown_download_item(
-        outputId = ns("save_json"),
-        label = "Save as JSON"
-      )
+      )#,
+      # dropdown_download_item(
+      #   outputId = ns("save_json"),
+      #   label = "Save as JSON"
+      # )
     ),
     dropdown_menu(
       icon = shiny::icon("upload"),
@@ -20,12 +20,12 @@ navbar_right_ui <- function(id) {
         inputId = ns("load_rds"),
         label = "Load RDS",
         icon = shiny::icon("upload")
-      ),
-      dropdown_item(
-        inputId = ns("load_json"),
-        label = "Load JSON",
-        icon = shiny::icon("upload")
-      )
+      )#,
+      # dropdown_item(
+      #   inputId = ns("load_json"),
+      #   label = "Load JSON",
+      #   icon = shiny::icon("upload")
+      # )
     )
   )
 }
@@ -37,11 +37,17 @@ navbar_right_server <- function(id, .values) {
 
       ns <- session$ns
 
+      content_r <- shiny::reactive({
+        list(
+          active = .values$distribution_manager$active_distributions_r(),
+          inactive = .values$distribution_manager$inactive_distributions_r()
+        )
+      })
+
       output$save_rds <- shiny::downloadHandler(
         filename = filename_factory(extension = "rds"),
         content = function(file) {
-          distributions <- .values$distribution_manager$active_distributions_r()
-          readr::write_rds(distributions, file)
+          readr::write_rds(content_r(), file)
         },
         contentType = "application/rds"
       )

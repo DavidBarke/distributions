@@ -16,7 +16,8 @@ distribution_manager_ui <- function(id, initial_size = 25) {
 distribution_manager_server <- function(id,
                                         .values,
                                         add_r,
-                                        active_distribution_indices_r
+                                        active_distribution_ids_r,
+                                        inactive_distribution_ids_r
 ) {
   shiny::moduleServer(
     id,
@@ -27,10 +28,13 @@ distribution_manager_server <- function(id,
       scale_size <- 20
       color_scale <- scales::col_numeric(palette(), c(0, scale_size - 1))
 
-      distribution_indices_rv <- shiny::reactiveVal(0)
-
       envir <- new.env()
       envir$dist_return <- list()
+      names(envir$dist_return) <- character()
+      # This counter is incremented every time a distribution is added.
+      # It keeps track of all ever available distributions within a session
+      # but is not adjusted when a distribution is removed
+      distribution_counter_rv <- shiny::reactiveVal(0)
 
       # One distribution_modifier for all distribution_boxes
       distribution_modifier_ui_proxy <- distribution_modifier_ui_proxy_factory(
@@ -44,7 +48,7 @@ distribution_manager_server <- function(id,
 
       # New distribution_boxes
       shiny::observeEvent(add_r(), {
-        index <- distribution_indices_rv() + 1
+        index <- distribution_counter_rv() + 1
         shiny::insertUI(
           selector = .values$inactive_dz_id,
           where = "afterBegin",
@@ -56,35 +60,43 @@ distribution_manager_server <- function(id,
           )
         )
 
-        envir$dist_return[[index]] <- distribution_box_server(
+        envir$dist_return[[as.character(index)]] <- distribution_box_server(
           id = "distribution" %_% index,
           .values = .values,
           distribution_modifier_return = distribution_modifier_return,
           distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
         )
 
-        distribution_indices_rv(index)
+        distribution_counter_rv(index)
       }, priority = 1)
 
-      distributions_r <- shiny::reactive({
-        distribution_indices_rv()
+      active_distributions_r <- shiny::reactive({
+        active_returns <- envir$dist_return[active_distribution_ids_r()]
 
-        distributions <- purrr::imap(envir$dist_return, function(x, i) {
-          x$distribution_r()
-        })
+        distributions <- purrr::map(
+          active_returns, function(x) {
+            x$distribution_r()
+          }
+        )
 
         do.call(c, distributions)
       })
 
-      active_distributions_r <- shiny::reactive({
-        distributions_r()[
-          active_distribution_indices_r()
-        ]
+      inactive_distributions_r <- shiny::reactive({
+        inactive_returns <- envir$dist_return[inactive_distribution_ids_r()]
+
+        distributions <- purrr::map(
+          inactive_returns, function(x) {
+            x$distribution_r()
+          }
+        )
+
+        do.call(c, distributions)
       })
 
       return_list <- list(
-        distributions_r = distributions_r,
-        active_distributions_r = active_distributions_r
+        active_distributions_r = active_distributions_r,
+        inactive_distributions_r = inactive_distributions_r
       )
 
       return(return_list)

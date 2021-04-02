@@ -41,7 +41,8 @@ body_server <- function(id, .values) {
         id = "distribution_manager",
         .values = .values,
         add_r = inactive_return$add_r,
-        active_distribution_indices_r = active_return$active_distribution_indices_r
+        active_distribution_ids_r = active_return$distribution_ids_r,
+        inactive_distribution_ids_r = inactive_return$distribution_ids_r
       )
 
       inactive_return <- inactive_drop_zone_server(
