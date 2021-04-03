@@ -42,11 +42,23 @@ html, body {
   }
 }
 
+.relative {
+  position: relative;
+}
+
 .bin-drop-zone {
-  padding: 1rem;
+  border: 1px solid transparent;
+  height: 50px;
+}
+
+.bin-drop-zone-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) ;
+  ms-transform: translate(-50%, -50%);
   color: black;
   text-align: center;
-  border: 1px solid transparent;
 }
 
 .bin-drop-zone * {

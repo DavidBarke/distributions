@@ -3,9 +3,15 @@ bin_drop_zone_ui <- function(id) {
 
   htmltools::tagList(
     htmltools::div(
-      class = "bin-drop-zone",
-      shiny::icon("dumpster-fire"),
-      id = ns("dz")
+      class = "relative",
+      htmltools::div(
+        class = "bin-drop-zone-overlay",
+        shiny::icon("dumpster-fire")
+      ),
+      htmltools::div(
+        class = "bin-drop-zone",
+        id = ns("dz")
+      )
     ),
     sortable::sortable_js(
       css_id = ns("dz"),
@@ -16,7 +22,8 @@ bin_drop_zone_ui <- function(id) {
           pull = TRUE,
           put = TRUE
         ),
-        onAdd = htmlwidgets::JS("function (e) { console.log('onAdd');this.el.removeChild(e.item); }")
+        onAdd = htmlwidgets::JS("function (e) { this.el.removeChild(e.item); }"),
+        direction = "vertical"
       )
     )
   )
