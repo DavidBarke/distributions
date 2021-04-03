@@ -7,3 +7,7 @@
 first_child <- function(x) {
   x$children[[1]]
 }
+
+is_distribution_or_null <- function(x) {
+  is.null(x) || distributional::is_distribution(x)
+}

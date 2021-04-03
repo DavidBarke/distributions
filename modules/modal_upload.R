@@ -152,8 +152,8 @@ is_valid_content <- function(x) {
   if (!hasName(x, "active") || !hasName(x, "inactive")) return(FALSE)
 
   if (
-    !distributional::is_distribution(x$active) ||
-    !distributional::is_distribution(x$inactive)
+    !is_distribution_or_null(x$active) ||
+    !is_distribution_or_null(x$inactive)
   ) return(FALSE)
 
   return(TRUE)
