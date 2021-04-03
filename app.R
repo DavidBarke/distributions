@@ -31,7 +31,8 @@ ui <- htmltools::tagList(
             status = "primary",
             rightUi = navbar_right_ui(
                 id = "navbar_right"
-            )
+            ),
+            fixed = TRUE
         ),
         sidebar = bs4Dash::bs4DashSidebar(
             disable = TRUE

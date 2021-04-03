@@ -6,20 +6,15 @@ $spacing: 5px;
 $primary: rgb(0, 123, 255);
 
 /* Height */
-.wrapper, .content-wrapper, .content, .row, .overflow-scroll {
-  height: 100%;
-}
-
-.card {
-  max-height: calc(100% - 95px);
-}
-
-html, body {
-  height: 100% !important;
-}
-
 .overflow-scroll .card-body {
+  max-height: 80.5vh;
   overflow-y: auto;
+}
+
+/* Fixed Navbar */
+
+.layout-navbar-fixed .main-header {
+  padding: 10px !important;
 }
 
 /* Bin Drop Zone */
