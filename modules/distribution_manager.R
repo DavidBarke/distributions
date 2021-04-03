@@ -122,13 +122,19 @@ distribution_manager_server <- function(id,
             .values$inactive_dz_id
 
           purrr::iwalk(msg$distributions, function(distribution, index) {
+            color <- if (hasName(distribution, "color")) {
+              distribution$color
+            } else {
+              color_scale((index + offset) %% scale_size)
+            }
+
             shiny::insertUI(
               selector = selector,
               where = "afterBegin",
               immediate = TRUE,
               ui = distribution_box_ui(
                 id = ns("distribution" %_% (index + offset)),
-                color = color_scale((index + offset) %% scale_size),
+                color = color,
                 index = index + offset,
                 value = distribution
               )
