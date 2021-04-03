@@ -128,12 +128,16 @@ Distribution <- R6::R6Class(
 
     plot_dists = function(distributions,
                           type = c("d", "p", "s", "h", "ch"),
-                          limits = c(0, 10)
+                          limits = c(0, 10),
+                          n = 100,
+                          shared_x = FALSE
     ) {
       private$plotter$plot(
         distributions = distributions,
         type = type,
-        limits = limits
+        limits = limits,
+        n = n,
+        shared_x = shared_x
       )
     },
 

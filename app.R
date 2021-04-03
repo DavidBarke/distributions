@@ -50,7 +50,6 @@ ui <- htmltools::tagList(
         ),
         freshTheme = fresh::create_theme(
             fresh::bs4dash_vars(
-                link_color = "white",
                 main_footer_padding = 0
             )
         ),
