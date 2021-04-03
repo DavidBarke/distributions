@@ -43,6 +43,7 @@ DistributionPlotter <- R6::R6Class(
 
       # Determine plotting positions on x axis
       x <- get_trace_x(
+        distribution = distribution,
         limits = limits,
         support = support,
         discrete = discrete

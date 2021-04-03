@@ -1,14 +1,39 @@
-get_trace_x <- function(limits = c(0, 1), support = c(-Inf, Inf), discrete = FALSE, n = 100) {
+get_trace_x <- function(distribution,
+                        limits = c(0, 1),
+                        support = c(-Inf, Inf),
+                        discrete = FALSE, n = 200,
+                        alpha = 1e-16
+) {
   x_seq_start <- max(limits[1], support[1])
   x_seq_end <- min(limits[2], support[2])
 
-  x_seq <- if (discrete) {
+  if (discrete) {
     x_seq_start <- ceiling(x_seq_start)
-    x_seq_end <- floor(x_seq_end)
+
+    x_seq_end <- min(
+      floor(x_seq_end),
+      quantile(distribution, 1 - alpha)
+    )
+
     if (x_seq_start > x_seq_end) return(numeric())
     x_seq_start:x_seq_end
   } else {
-    seq(x_seq_start, x_seq_end, length.out = n)
+    x_seq_start_max <- max(
+      x_seq_start,
+      quantile(distribution, alpha)
+    )
+
+    x_seq_end_min <- min(
+      x_seq_end,
+      quantile(distribution, 1 - alpha)
+    )
+
+    x_seq <- seq(x_seq_start_max, x_seq_end_min, length.out = n)
+
+    if (x_seq_start_max > x_seq_start) x_seq <- c(x_seq_start, x_seq)
+    if (x_seq_end_min < x_seq_end) x_seq <- c(x_seq, x_seq_end)
+
+    x_seq
   }
 }
 
