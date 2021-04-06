@@ -23,13 +23,13 @@ plot_ui <- function(id) {
         n_x_ui(
           id = ns("n_x")
         )
-      ),
-      shiny::column(
-        width = 6,
-        shared_x_ui(
-          id = ns("shared_x")
-        )
-      )
+      )#,
+      # shiny::column(
+      #   width = 6,
+      #   shared_x_ui(
+      #     id = ns("shared_x")
+      #   )
+      # )
     )
   )
 }
@@ -47,7 +47,7 @@ plot_server <- function(id, .values, distributions_r) {
           input$type,
           limits = x_limits_return$limits_r(),
           n = n_x_return$n_r(),
-          shared_x = shared_x_return$shared_x_r()
+          shared_x = FALSE # Currently there is no added value by shared_x = T
         )
       })
 
@@ -61,10 +61,10 @@ plot_server <- function(id, .values, distributions_r) {
         .values = .values
       )
 
-      shared_x_return <- shared_x_server(
-        id = "shared_x",
-        .values = .values
-      )
+      # shared_x_return <- shared_x_server(
+      #   id = "shared_x",
+      #   .values = .values
+      # )
     }
   )
 }

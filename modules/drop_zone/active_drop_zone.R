@@ -7,7 +7,26 @@ active_drop_zone_ui <- function(id) {
       collapsible = FALSE,
       solidHeader = TRUE,
       status = "primary",
-      title = "Active Distributions",
+      title = htmltools::tagList(
+        "Active Distributions",
+        popover_2(
+          tag = shiny::actionLink(
+            inputId = ns("title_info"),
+            label = NULL,
+            icon = shiny::icon("info-circle")
+          ),
+          title = "Active Distributions",
+          content = htmltools::tagList(
+            htmltools::p(
+              "Drag an active distribution to the inactive distribution area to remove it from the visualization."
+            ),
+            htmltools::hr(),
+            htmltools::p(
+              "Modify a distribution by clicking on its type or its parameters."
+            )
+          )
+        )
+      ),
       htmltools::div(
         id = ns("dz")
       )

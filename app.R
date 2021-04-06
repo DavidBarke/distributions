@@ -22,6 +22,7 @@ ui <- htmltools::tagList(
     htmltools::includeScript("www/js/remove-icon.js"),
     htmltools::includeScript("www/js/bin-drop-zone.js"),
     htmltools::includeScript("www/js/update-sortable-handler.js"),
+    htmltools::includeScript("www/js/popover.js"),
     htmltools::includeCSS("www/css/styles.css"),
     bs4Dash::bs4DashPage(
         header = bs4Dash::bs4DashNavbar(

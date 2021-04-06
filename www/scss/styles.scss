@@ -7,7 +7,7 @@ $primary: rgb(0, 123, 255);
 
 /* Height */
 .overflow-scroll .card-body {
-  max-height: 80.5vh;
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
 }
 
@@ -15,6 +15,10 @@ $primary: rgb(0, 123, 255);
 
 .layout-navbar-fixed .main-header {
   padding: 10px !important;
+}
+
+.brand-text {
+  color: white;
 }
 
 /* Bin Drop Zone */
@@ -60,13 +64,13 @@ $primary: rgb(0, 123, 255);
   pointer-events: none;
 }
 
-.bin-drop-zone.hover {
+.dragged .bin-drop-zone {
   background-image: linear-gradient(to right, #ef3b36, white 50%, #ef3b36);
   border: 1px solid red;
   color: red;
 }
 
-.bin-drop-zone.hover i {
+.dragged .bin-drop-zone-overlay i {
   animation-name: shake;
   animation-duration: 1s;
   animation-iteration-count: infinite;
