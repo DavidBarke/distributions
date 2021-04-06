@@ -4,6 +4,7 @@ Distribution <- R6::R6Class(
     initialize = function() {
       private$plotter <- DistributionPlotter$new(self)
 
+      # Must be set here, otherwise unicode is not handled properly
       private$func_choices <- c("d", "p", "s", "h", "ch")
       names(private$func_choices) <- c(
         "Probability Density Function f(x)",
@@ -49,9 +50,14 @@ Distribution <- R6::R6Class(
     dist_to_trace_name = function(distribution) {
       id <- self$dist_to_id(distribution)
 
-      if (id == "degenerate") return(distribution$x)
+      name <- private$short_name[id]
 
-      capture.output(distribution)
+      param_names <- self$get_param_names(id)
+      param_values <- self$dist_to_params(distribution)
+
+      paste0(
+        name, "(", paste0(param_names, ": ", param_values, collapse = ", "), ")"
+      )
     },
 
     get_choices = function() {
@@ -185,6 +191,28 @@ Distribution <- R6::R6Class(
       "Weibull" = "weibull"
     ),
 
+    short_name = c(
+      "bernoulli" = "Brnl",
+      "beta" = "Beta",
+      "binomial" = "B",
+      "cauchy" = "Cauchy",
+      "chisq" = "\u03C7\u00B2",
+      "degenerate" = "Deg",
+      "exponential" = "Exp",
+      "f" = "F",
+      "gamma" = "\u0393",
+      "gumbel" = "Gumb",
+      "hypergeometric" = "Hyp",
+      "logarithmic" = "Loga",
+      "logistic" = "Logi",
+      "negbin" = "NB",
+      "normal" = "N",
+      "poisson" = "P",
+      "student_t" = "t",
+      "uniform" = "U",
+      "weibull" = "W"
+    ),
+
     func_choices = NULL,
 
     discrete = c(
@@ -272,8 +300,8 @@ Distribution <- R6::R6Class(
         "prob" = "p"
       ),
       cauchy = list(
-        "location" = "&#x3BC",
-        "scale" = "&#x3C3"
+        "location" = "\u03BC",
+        "scale" = "\u03C3"
       ),
       chisq = list(
         "df" = "df",
@@ -283,7 +311,7 @@ Distribution <- R6::R6Class(
         "x" = "x"
       ),
       exponential = list(
-        "rate" = "&#x3BB"
+        "rate" = "\u03BB"
       ),
       f = list(
         "df1" = "df1",
@@ -292,14 +320,14 @@ Distribution <- R6::R6Class(
       ),
       gamma = list(
         "shape" = "k",
-        "rate" = "&#x3B2"
+        "rate" = "\u03B2"
       ),
       geometric = list(
         "prob" = "p"
       ),
       gumbel = list(
-        "alpha" = "&#x3BC",
-        "scale" = "&#x3C3"
+        "alpha" = "\u03BC",
+        "scale" = "\u03C3"
       ),
       hypergeometric = list(
         "m" = "m",
@@ -310,24 +338,24 @@ Distribution <- R6::R6Class(
         "prob" = "p"
       ),
       logistic = list(
-        "location" = "&#x3BC",
-        "scale" = "&#x3C3"
+        "location" = "\u03BC",
+        "scale" = "\u03C3"
       ),
       negbin = list(
         "size" = "n",
         "prob" = "p"
       ),
       normal = list(
-        "mu" = "&#x3BC",
-        "sigma" = "&#x3C3"
+        "mu" = "\u03BC",
+        "sigma" = "\u03C3"
       ),
       poisson = list(
-        "lambda" = "&#x3BB"
+        "lambda" = "\u03BB"
       ),
       student_t = list(
         "df" = "df",
-        "mu" = "&#x3BC",
-        "sigma" = "&#x3C3",
+        "mu" = "\u03BC",
+        "sigma" = "\u03C3",
         "ncp" = "ncp"
       ),
       uniform = list(
@@ -335,7 +363,7 @@ Distribution <- R6::R6Class(
         "max" = "b"
       ),
       weibull = list(
-        "shape" = "&#x3BB",
+        "shape" = "\u03BB",
         "scale" = "k"
       )
     ),
