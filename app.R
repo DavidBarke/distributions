@@ -24,6 +24,7 @@ ui <- htmltools::tagList(
     htmltools::includeScript("www/js/update-sortable-handler.js"),
     htmltools::includeScript("www/js/popover.js"),
     htmltools::includeCSS("www/css/styles.css"),
+    rintrojs::introjsUI(),
     bs4Dash::bs4DashPage(
         header = bs4Dash::bs4DashNavbar(
             title = bs4Dash::bs4DashBrand(

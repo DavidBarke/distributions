@@ -8,9 +8,13 @@ bin_drop_zone_ui <- function(id) {
         class = "bin-drop-zone-overlay",
         shiny::icon("dumpster-fire")
       ),
-      htmltools::div(
-        class = "bin-drop-zone",
-        id = ns("dz")
+      rintrojs::introBox(
+        data.step = 3,
+        data.intro = "Remove distributions you don't need anymore by dragging them to the bin",
+        htmltools::div(
+          class = "bin-drop-zone",
+          id = ns("dz")
+        )
       )
     ),
     sortable::sortable_js(

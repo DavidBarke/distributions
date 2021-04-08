@@ -3,6 +3,15 @@ navbar_right_ui <- function(id) {
 
   # Fake dropdowns
   htmltools::tagList(
+    htmltools::tags$li(
+      class = "nav-item dropdown",
+      shiny::actionLink(
+        inputId = ns("intro"),
+        label = NULL,
+        icon = shiny::icon("question-circle"),
+        class = "nav-link"
+      )
+    ),
     dropdown_menu(
       icon = shiny::icon("download"),
       dropdown_download_item(
@@ -36,6 +45,10 @@ navbar_right_server <- function(id, .values) {
     function(input, output, session) {
 
       ns <- session$ns
+
+      shiny::observeEvent(input$intro, {
+        rintrojs::introjs(session)
+      })
 
       content_r <- shiny::reactive({
         list(

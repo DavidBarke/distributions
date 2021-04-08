@@ -6,27 +6,35 @@ body_ui <- function(id) {
       shiny::column(
         width = 6,
         class = "overflow-scroll",
-        shiny::fluidRow(
-          shiny::column(
-            width = 6,
-            class = "overflow-scroll",
-            inactive_drop_zone_ui(
-              id = ns("inactive_drop_zone")
-            )
-          ),
-          shiny::column(
-            width = 6,
-            class = "overflow-scroll",
-            active_drop_zone_ui(
-              id = ns("active_drop_zone")
+        rintrojs::introBox(
+          data.step = 1,
+          data.intro = "Prepare distributions",
+          shiny::fluidRow(
+            shiny::column(
+              width = 6,
+              class = "overflow-scroll",
+              inactive_drop_zone_ui(
+                id = ns("inactive_drop_zone")
+              )
+            ),
+            shiny::column(
+              width = 6,
+              class = "overflow-scroll",
+              active_drop_zone_ui(
+                id = ns("active_drop_zone")
+              )
             )
           )
         )
       ),
       shiny::column(
         width = 6,
-        plot_ui(
-          id = ns("plot")
+        rintrojs::introBox(
+          data.step = 2,
+          data.intro = "Visualize distributions",
+          plot_ui(
+            id = ns("plot")
+          )
         )
       )
     )
