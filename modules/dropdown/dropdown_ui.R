@@ -1,4 +1,8 @@
-dropdown_menu <- function(..., icon = NULL) {
+dropdown_menu <- function(..., icon = NULL, intro_box_factory = NULL) {
+  if (!is.null(intro_box_factory)) {
+    icon <- intro_box_factory(icon)
+  }
+
   htmltools::tags$li(
     class = "nav-item dropdown",
     htmltools::a(

@@ -2,15 +2,15 @@ bin_drop_zone_ui <- function(id) {
   ns <- shiny::NS(id)
 
   htmltools::tagList(
-    htmltools::div(
-      class = "relative",
+    rintrojs::introBox(
+      data.step = 3,
+      data.intro = "Remove distributions you don't need anymore by dragging them to the bin area.",
       htmltools::div(
-        class = "bin-drop-zone-overlay",
-        shiny::icon("dumpster-fire")
-      ),
-      rintrojs::introBox(
-        data.step = 3,
-        data.intro = "Remove distributions you don't need anymore by dragging them to the bin",
+        class = "relative",
+        htmltools::div(
+          class = "bin-drop-zone-overlay",
+          shiny::icon("dumpster-fire"),
+        ),
         htmltools::div(
           class = "bin-drop-zone",
           id = ns("dz")

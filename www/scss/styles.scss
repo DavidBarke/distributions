@@ -60,6 +60,10 @@ $primary: rgb(0, 123, 255);
   text-align: center;
 }
 
+.introjs-helperLayer {
+  mix-blend-mode: overlay !important;
+}
+
 .bin-drop-zone * {
   pointer-events: none;
 }

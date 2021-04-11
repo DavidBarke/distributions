@@ -17,11 +17,22 @@ navbar_right_ui <- function(id) {
       dropdown_download_item(
         outputId = ns("save_rds"),
         label = "Save as RDS"
-      )#,
-      # dropdown_download_item(
-      #   outputId = ns("save_json"),
-      #   label = "Save as JSON"
-      # )
+      ),
+      intro_box_factory = function(ui) {
+        rintrojs::introBox(
+          ui,
+          data.step = 4,
+          data.intro = htmltools::tagList(
+            htmltools::p(
+              "All present distributions can be saved in the .rds file format,
+              so that you can either import them in your R session or load them
+              at a later point in time. This enables you to prepare a set of
+              distributions once and reuse and enhance it anytime in the
+              future."
+            )
+          )
+        )
+      }
     ),
     dropdown_menu(
       icon = shiny::icon("upload"),
@@ -29,12 +40,20 @@ navbar_right_ui <- function(id) {
         inputId = ns("load_rds"),
         label = "Load RDS",
         icon = shiny::icon("upload")
-      )#,
-      # dropdown_item(
-      #   inputId = ns("load_json"),
-      #   label = "Load JSON",
-      #   icon = shiny::icon("upload")
-      # )
+      ),
+      intro_box_factory = function(ui) {
+        rintrojs::introBox(
+          ui,
+          data.step = 5,
+          data.intro = htmltools::tagList(
+            htmltools::p(
+              "Alternatively you can prepare distributions in your R sessions
+              and upload them to this application for visualization. For more
+              details read the help text in the upload dialog."
+            )
+          )
+        )
+      }
     )
   )
 }
@@ -47,7 +66,12 @@ navbar_right_server <- function(id, .values) {
       ns <- session$ns
 
       shiny::observeEvent(input$intro, {
-        rintrojs::introjs(session)
+        rintrojs::introjs(
+          session,
+          options = list(
+            showStepNumbers = FALSE
+          )
+        )
       })
 
       content_r <- shiny::reactive({

@@ -45,7 +45,6 @@ $.extend(binding, {
   },
 
   receiveMessage: function(el, data) {
-    console.log(data.action);
     if (data.action === "update") {
       this.setValue(el, data);
     }
