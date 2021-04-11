@@ -13,6 +13,38 @@ Distribution <- R6::R6Class(
         "Hazard Function \u03BB(x)",
         "Cumulative Hazard Function \u039B(x)"
       )
+
+      # Must be set here, otherwise private is not available in functions
+      private$distribution_funcs <- list(
+        # Probability density function
+        d = list(
+          default = stats::density
+        ),
+        # Cumulative distribution function
+        p = list(
+          default = distributional::cdf
+        ),
+        # Survival function
+        s = list(
+          default = function(d, x) {
+            1 - distributional::cdf(d, x)
+          }
+        ),
+        # Hazard function
+        h = list(
+          default = function(d, x) {
+            stats::density(d, x) / private$distribution_funcs$s$default(d, x)
+          },
+          exponential = function(d, x) rep(d$rate, times = length(x))
+        ),
+        # Cumulative hazard function
+        ch = list(
+          default = function(d, x) {
+            -log(private$distribution_funcs$s$default(d, x))
+          },
+          exponential = function(d, x) d$rate * x
+        )
+      )
     },
 
     dist_to_id = function(distribution) {
@@ -62,6 +94,14 @@ Distribution <- R6::R6Class(
 
     get_choices = function() {
       private$choices
+    },
+
+    get_distribution_func = function(id, type = c("d", "p", "s", "h", "ch")) {
+      type <- match.arg(type)
+
+      funcs <- private$distribution_funcs[[type]]
+
+      funcs[[id]] %||% funcs$default
     },
 
     get_func = function(id) {
@@ -288,6 +328,8 @@ Distribution <- R6::R6Class(
       uniform = distributional::dist_uniform,
       weibull = distributional::dist_weibull
     ),
+
+    distribution_funcs = NULL,
 
     params = list(
       bernoulli = list("prob" = "p"),
