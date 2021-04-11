@@ -10,7 +10,7 @@ body_ui <- function(id) {
           data.step = 1,
           data.intro = htmltools::tagList(
             htmltools::p(
-              "Welcome to this short intro \U0001F389"
+              "Welcome to the intro \U0001F389"
             ),
             htmltools::p(
               "In the highlighted boxes you can manage your distributions.

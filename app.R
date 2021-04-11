@@ -25,10 +25,12 @@ ui <- htmltools::tagList(
     htmltools::includeScript("www/js/popover.js"),
     htmltools::includeCSS("www/css/styles.css"),
     rintrojs::introjsUI(),
+    glouton::use_glouton(),
     bs4Dash::bs4DashPage(
         header = bs4Dash::bs4DashNavbar(
             title = bs4Dash::bs4DashBrand(
-                title = "Distributions"
+                title = "Distributions",
+                href = "https://github.com/DavidBarke/distributions"
             ),
             status = "primary",
             rightUi = navbar_right_ui(
@@ -59,7 +61,7 @@ ui <- htmltools::tagList(
     )
 )
 
-server <- function(input, output) {
+server <- function(input, output, session) {
 
     .values <- new.env()
 
@@ -72,6 +74,19 @@ server <- function(input, output) {
         id = "navbar_right",
         .values = .values
     )
+
+    shiny::observeEvent(TRUE, {
+        needs_intro <- is.null(glouton::fetch_cookies()$intro)
+        if (needs_intro) {
+            glouton::add_cookie("intro", "true")
+            rintrojs::introjs(
+                session,
+                options = list(
+                    showStepNumbers = FALSE
+                )
+            )
+        }
+    }, once = TRUE)
 }
 
 shinyApp(ui = ui, server = server)

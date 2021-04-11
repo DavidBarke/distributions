@@ -149,3 +149,9 @@ $primary: rgb(0, 123, 255);
 .sortable-ghost-hidden {
   display: none;
 }
+
+/* TabBox in Modal */
+
+.modal-body .card {
+  margin: -1rem;
+}

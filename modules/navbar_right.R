@@ -66,6 +66,7 @@ navbar_right_server <- function(id, .values) {
       ns <- session$ns
 
       shiny::observeEvent(input$intro, {
+        glouton::add_cookie("intro", "true")
         rintrojs::introjs(
           session,
           options = list(

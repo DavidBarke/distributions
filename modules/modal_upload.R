@@ -4,14 +4,26 @@ modal_upload_ui <- function(id) {
   shiny::modalDialog(
     title = "Upload distributions from an RDS file",
     easyClose = TRUE,
-    shiny::fileInput(
-      inputId = ns("file"),
-      label = "Select an RDS file",
-      accept = ".rds",
-      width = "100%"
-    ),
-    shiny::uiOutput(
-      outputId = ns("settings")
+    bs4Dash::tabBox(
+      id = ns("tabs"),
+      width = NULL,
+      collapsible = FALSE,
+      shiny::tabPanel(
+        title = "Upload",
+        shiny::fileInput(
+          inputId = ns("file"),
+          label = "Select an RDS file",
+          accept = ".rds",
+          width = "100%"
+        ),
+        shiny::uiOutput(
+          outputId = ns("settings")
+        ),
+      ),
+      shiny::tabPanel(
+        title = "Help",
+        htmltools::p("Help")
+      )
     ),
     footer = htmltools::tagList(
       shiny::uiOutput(
