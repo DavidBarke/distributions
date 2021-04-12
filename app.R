@@ -23,9 +23,11 @@ ui <- htmltools::tagList(
     htmltools::includeScript("www/js/bin-drop-zone.js"),
     htmltools::includeScript("www/js/update-sortable-handler.js"),
     htmltools::includeScript("www/js/popover.js"),
+    htmltools::includeScript("www/js/mathjax-typeset-handler.js"),
     htmltools::includeCSS("www/css/styles.css"),
     rintrojs::introjsUI(),
     glouton::use_glouton(),
+    shiny::withMathJax(),
     bs4Dash::bs4DashPage(
         header = bs4Dash::bs4DashNavbar(
             title = bs4Dash::bs4DashBrand(
@@ -44,7 +46,8 @@ ui <- htmltools::tagList(
         body = bs4Dash::bs4DashBody(
             body_ui(
                 id = "body"
-            )
+            ),
+            shiny::actionButton(inputId = "test", label = "Test")
         ),
         footer = bs4Dash::bs4DashFooter(
             left = bin_drop_zone_ui(

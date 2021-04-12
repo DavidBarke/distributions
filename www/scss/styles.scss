@@ -155,3 +155,20 @@ $primary: rgb(0, 123, 255);
 .modal-body .card {
   margin: -1rem;
 }
+
+/* Distribution Function Popover */
+
+.dist-func-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr
+}
+
+.dist-func-row > div {
+  align-self: center;
+}
+
+/* Popover Width */
+
+.popover {
+  max-width: max-content;
+}

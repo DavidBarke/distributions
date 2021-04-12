@@ -108,7 +108,8 @@ DistributionPlotter <- R6::R6Class(
     get_trace_x = function(distribution,
                            limits = c(0, 1),
                            support = c(-Inf, Inf),
-                           discrete = FALSE, n = 200,
+                           discrete = FALSE,
+                           n = 200,
                            alpha = 1e-16
     ) {
       x_seq_start <- max(limits[1], support[1])

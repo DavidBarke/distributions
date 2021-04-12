@@ -38,3 +38,11 @@ popover_2 <- function(tag,
     tag
   )
 }
+
+dist_func_row <- function(name, definition) {
+  htmltools::div(
+    class = "dist-func-row",
+    htmltools::div(name),
+    htmltools::div(definition)
+  )
+}

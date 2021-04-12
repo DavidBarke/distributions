@@ -8,7 +8,43 @@ plot_ui <- function(id) {
     status = "primary",
     shiny::selectInput(
       inputId = ns("type"),
-      label = "Distribution Function",
+      label = htmltools::tagList(
+        "Distribution Function",
+        popover_2(
+          tag = shiny::actionLink(
+            inputId = ns("type_info"),
+            label = NULL,
+            icon = shiny::icon("info-circle")
+          ),
+          title = "Distribution Functions",
+          content = htmltools::tagList(
+            dist_func_row(
+              htmltools::tags$b("Name"),
+              htmltools::tags$b("Definition")
+            ),
+            withMathJax(dist_func_row(
+              "Probability Density Function",
+              "$$f_{X}(x) = P(X = x)$$"
+            )),
+            dist_func_row(
+              "Cumulative Distribution Function",
+              "$$F_{X}(x) = \\int_{-\\infty}^{x} f(x) \\, \\mathrm{d}x = P (X \\le x)$$"
+            ),
+            dist_func_row(
+              "Survival Function",
+              "$$S_{X}(x) = \\int_{x}^{\\infty} f(x) \\, \\mathrm{d}x = P (X \\ge x)$$"
+            ),
+            dist_func_row(
+              "Hazard Function",
+              "$$\\lambda_{X}(x) = \\tfrac{f(x)}{S(x)}$$"
+            ),
+            dist_func_row(
+              "Cumulative Hazard Function",
+              "$$\\Lambda_{X}(x) = - \\log\\big(S(x)\\big)$$"
+            )
+          )
+        )
+      ),
       choices = distribution_helper$get_func_choices()
     ),
     plotly::plotlyOutput(
@@ -23,13 +59,7 @@ plot_ui <- function(id) {
         n_x_ui(
           id = ns("n_x")
         )
-      )#,
-      # shiny::column(
-      #   width = 6,
-      #   shared_x_ui(
-      #     id = ns("shared_x")
-      #   )
-      # )
+      )
     )
   )
 }
@@ -40,6 +70,11 @@ plot_server <- function(id, .values, distributions_r) {
     function(input, output, session) {
 
       ns <- session$ns
+
+      shiny::observeEvent(input$type_info, {
+        # Typeset MathJax for popover
+        session$sendCustomMessage("mathjax-typeset", TRUE)
+      })
 
       output$plot <- plotly::renderPlotly({
         distribution_helper$plot_dists(
@@ -60,11 +95,6 @@ plot_server <- function(id, .values, distributions_r) {
         id = "n_x",
         .values = .values
       )
-
-      # shared_x_return <- shared_x_server(
-      #   id = "shared_x",
-      #   .values = .values
-      # )
     }
   )
 }
