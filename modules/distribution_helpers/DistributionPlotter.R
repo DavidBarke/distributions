@@ -6,10 +6,9 @@ DistributionPlotter <- R6::R6Class(
     },
 
     plot = function(distributions,
-                    type = c("d", "p", "s", "h", "ch"),
+                    type = c("d", "p", "q", "s", "h", "ch"),
                     limits = c(-5, 5),
-                    n = 100,
-                    shared_x = FALSE
+                    n = 100
     ) {
       type <- match.arg(type)
 
@@ -21,8 +20,7 @@ DistributionPlotter <- R6::R6Class(
           distribution = distribution,
           type = type,
           limits = limits,
-          n = n,
-          shared_x = shared_x
+          n = n
         )
       }
 
@@ -37,10 +35,9 @@ DistributionPlotter <- R6::R6Class(
 
     add_dist_trace = function(p,
                               distribution,
-                              type = c("d", "p", "s", "h", "ch"),
+                              type = c("d", "p", "q", "s", "h", "ch"),
                               limits = c(0, 10),
-                              n = 100,
-                              shared_x = FALSE
+                              n = 100
     ) {
       type <- match.arg(type)
 
@@ -48,8 +45,8 @@ DistributionPlotter <- R6::R6Class(
       support <- private$distribution_helper$dist_to_support(distribution)
 
       # Determine plotting positions on x axis
-      x <- if (shared_x) {
-        seq(limits[1], limits[2], length.out = n)
+      x <- if (type == "q") {
+        seq(0, 1, length.out = n)
       } else {
         private$get_trace_x(
           distribution = distribution,
@@ -80,7 +77,7 @@ DistributionPlotter <- R6::R6Class(
     add_layout = function(p, type, limits) {
       xaxis <- list(
         title = list(
-          text = "x"
+          text = if (type == "q") "p" else "x"
         ),
         range = limits
       )
@@ -91,6 +88,7 @@ DistributionPlotter <- R6::R6Class(
             type,
             "d" = "f(x)",
             "p" = "F(x)",
+            "q" = "Q(p)",
             "s" = "S(x)",
             "h" = "\u03BB(x)",
             "ch" = "\u039B(x)"

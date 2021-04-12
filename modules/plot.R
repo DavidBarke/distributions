@@ -22,25 +22,29 @@ plot_ui <- function(id) {
               htmltools::tags$b("Name"),
               htmltools::tags$b("Definition")
             ),
-            withMathJax(dist_func_row(
+            dist_func_row(
               "Probability Density Function",
               "$$f_{X}(x) = P(X = x)$$"
-            )),
+            ),
             dist_func_row(
               "Cumulative Distribution Function",
-              "$$F_{X}(x) = \\int_{-\\infty}^{x} f(x) \\, \\mathrm{d}x = P (X \\le x)$$"
+              "$$F_{X}(x) = \\int_{-\\infty}^{x} f_{X}(x) \\, \\mathrm{d}x = P (X \\le x)$$"
+            ),
+            dist_func_row(
+              "Quantile Function",
+              "$$Q_{X}(p) = \\mathrm{inf}\\{x \\in \\mathbb{R} : p \\le F_{X}(x)\\} = F_{X}^{-1}(p)$$"
             ),
             dist_func_row(
               "Survival Function",
-              "$$S_{X}(x) = \\int_{x}^{\\infty} f(x) \\, \\mathrm{d}x = P (X \\ge x)$$"
+              "$$S_{X}(x) = \\int_{x}^{\\infty} f_{X}(x) \\, \\mathrm{d}x = P (X \\ge x)$$"
             ),
             dist_func_row(
               "Hazard Function",
-              "$$\\lambda_{X}(x) = \\tfrac{f(x)}{S(x)}$$"
+              "$$\\lambda_{X}(x) = \\tfrac{f_{X}(x)}{S_{X}(x)}$$"
             ),
             dist_func_row(
               "Cumulative Hazard Function",
-              "$$\\Lambda_{X}(x) = - \\log\\big(S(x)\\big)$$"
+              "$$\\Lambda_{X}(x) = - \\log\\big(S_{X}(x)\\big)$$"
             )
           )
         )
@@ -76,19 +80,23 @@ plot_server <- function(id, .values, distributions_r) {
         session$sendCustomMessage("mathjax-typeset", TRUE)
       })
 
+      type_r <- shiny::reactive({
+        input$type
+      })
+
       output$plot <- plotly::renderPlotly({
         distribution_helper$plot_dists(
           distributions = distributions_r(),
-          input$type,
+          type_r(),
           limits = x_limits_return$limits_r(),
-          n = n_x_return$n_r(),
-          shared_x = FALSE # Currently there is no added value by shared_x = T
+          n = n_x_return$n_r()
         )
       })
 
       x_limits_return <- x_limits_server(
         id = "x_limits",
-        .values = .values
+        .values = .values,
+        type_r = type_r
       )
 
       n_x_return <- n_x_server(

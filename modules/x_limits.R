@@ -23,23 +23,49 @@ x_limits_ui <- function(id) {
   )
 }
 
-x_limits_server <- function(id, .values) {
+x_limits_server <- function(id, .values, type_r) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
 
       ns <- session$ns
 
-      min_r <- shiny::reactive({
-        if (is.null(input$min) || is.na(input$min)) return(-1)
+      shiny::observeEvent(type_r(), {
+        if (type_r() == "q") {
+          if (input$min < 0) {
+            shiny::updateNumericInput(
+              inputId = "min",
+              value = 0
+            )
+          }
 
-        input$min
+          if (input$max > 1) {
+            shiny::updateNumericInput(
+              inputId = "max",
+              value = 1
+            )
+          }
+        }
+      })
+
+      min_r <- shiny::reactive({
+        if (is.null(input$min) || is.na(input$min)) return(0)
+
+        if (type_r() == "q") {
+          max(0, min(1, input$min))
+        } else {
+          input$min
+        }
       })
 
       max_r <- shiny::reactive({
         if (is.null(input$max) || is.na(input$max)) return(1)
 
-        input$max
+        if (type_r() == "q") {
+          max(0, min(1, input$max))
+        } else {
+          input$max
+        }
       })
 
       limits_r <- shiny::reactive({

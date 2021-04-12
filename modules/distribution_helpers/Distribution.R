@@ -5,10 +5,11 @@ Distribution <- R6::R6Class(
       private$plotter <- DistributionPlotter$new(self)
 
       # Must be set here, otherwise unicode is not handled properly
-      private$func_choices <- c("d", "p", "s", "h", "ch")
+      private$func_choices <- c("d", "p", "q", "s", "h", "ch")
       names(private$func_choices) <- c(
         "Probability Density Function f(x)",
         "Cumulative Distribution Function F(x)",
+        "Quantile Function Q(p)",
         "Survival Function S(x)",
         "Hazard Function \u03BB(x)",
         "Cumulative Hazard Function \u039B(x)"
@@ -23,6 +24,9 @@ Distribution <- R6::R6Class(
         # Cumulative distribution function
         p = list(
           default = distributional::cdf
+        ),
+        q = list(
+          default = stats::quantile
         ),
         # Survival function
         s = list(
@@ -96,7 +100,9 @@ Distribution <- R6::R6Class(
       private$choices
     },
 
-    get_distribution_func = function(id, type = c("d", "p", "s", "h", "ch")) {
+    get_distribution_func = function(id,
+                                     type = c("d", "p", "q", "s", "h", "ch")
+    ) {
       type <- match.arg(type)
 
       funcs <- private$distribution_funcs[[type]]
@@ -173,17 +179,15 @@ Distribution <- R6::R6Class(
     },
 
     plot_dists = function(distributions,
-                          type = c("d", "p", "s", "h", "ch"),
+                          type = c("d", "p", "q", "s", "h", "ch"),
                           limits = c(0, 10),
-                          n = 100,
-                          shared_x = FALSE
+                          n = 100
     ) {
       private$plotter$plot(
         distributions = distributions,
         type = type,
         limits = limits,
-        n = n,
-        shared_x = shared_x
+        n = n
       )
     },
 
@@ -241,6 +245,7 @@ Distribution <- R6::R6Class(
       "exponential" = "Exp",
       "f" = "F",
       "gamma" = "\u0393",
+      "geometric" = "Geom",
       "gumbel" = "Gumb",
       "hypergeometric" = "Hyp",
       "logarithmic" = "Loga",
