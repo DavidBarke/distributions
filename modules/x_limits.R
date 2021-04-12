@@ -30,8 +30,20 @@ x_limits_server <- function(id, .values) {
 
       ns <- session$ns
 
+      min_r <- shiny::reactive({
+        if (is.null(input$min) || is.na(input$min)) return(-1)
+
+        input$min
+      })
+
+      max_r <- shiny::reactive({
+        if (is.null(input$max) || is.na(input$max)) return(1)
+
+        input$max
+      })
+
       limits_r <- shiny::reactive({
-        sort(c(shiny::req(input$min), shiny::req(input$max)))
+        sort(c(min_r(), max_r()))
       })
 
       return_list <- list(
