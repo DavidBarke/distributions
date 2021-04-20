@@ -109,8 +109,8 @@
       "RemoteUsername": "RinteRface",
       "RemoteRepo": "bs4Dash",
       "RemoteRef": "master",
-      "RemoteSha": "2f258dc91f5b6a44c5e35dd2dd0142ebe37ed332",
-      "Hash": "3e0f405ac1559b0616dbc84fe7ef226f"
+      "RemoteSha": "11e90e121dd41369ffaad7694d47f401b76d9a0e",
+      "Hash": "75c19e6db1c7f5410cb8140fadf56890"
     },
     "bslib": {
       "Package": "bslib",
@@ -149,6 +149,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "3ef298932294b775fa0a3eeaa3a645b0"
+    },
+    "clipr": {
+      "Package": "clipr",
+      "Version": "0.7.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ebaa97ac99cc2daf04e77eecc7b781d7"
     },
     "colorspace": {
       "Package": "colorspace",
@@ -288,6 +295,18 @@
       "Repository": "CRAN",
       "Hash": "3eb6477d01eb5bbdc03f7d5f70f2733e"
     },
+    "glouton": {
+      "Package": "glouton",
+      "Version": "0.0.0.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "ColinFay",
+      "RemoteRepo": "glouton",
+      "RemoteRef": "master",
+      "RemoteSha": "1c49d32466816fa12f5052f49090cea6bb56c990",
+      "Hash": "a5a95f4de5e5200c42128ef2279a5814"
+    },
     "glue": {
       "Package": "glue",
       "Version": "1.4.2",
@@ -308,6 +327,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "4dc5bb88961e347a0f4d8aad597cbfac"
+    },
+    "hms": {
+      "Package": "hms",
+      "Version": "1.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bf552cdd96f5969873afdac7311c7d0d"
     },
     "htmltools": {
       "Package": "htmltools",
@@ -515,12 +541,26 @@
       "Repository": "CRAN",
       "Hash": "8c8298583adbbe76f3c2220eef71bebc"
     },
+    "readr": {
+      "Package": "readr",
+      "Version": "1.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2639976851f71f330264a9c9c3d43a61"
+    },
     "renv": {
       "Package": "renv",
       "Version": "0.12.5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "5c0cdb37f063c58cdab3c7e9fbb8bd2c"
+    },
+    "rintrojs": {
+      "Package": "rintrojs",
+      "Version": "0.2.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "15a8768183fd609cee75e4789da27621"
     },
     "rlang": {
       "Package": "rlang",

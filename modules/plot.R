@@ -46,7 +46,13 @@ plot_ui <- function(id) {
               "Cumulative Hazard Function",
               "$$\\Lambda_{X}(x) = - \\log\\big(S_{X}(x)\\big)$$"
             )
-          )
+          ),
+          `data-template` = '
+          <div class="popover wide-popover" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-header"></h3>
+            <div class="popover-body"></div>
+          </div>'
         )
       ),
       choices = distribution_helper$get_func_choices()
