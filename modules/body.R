@@ -82,6 +82,17 @@ body_server <- function(id, .values) {
         inactive_distribution_ids_r = inactive_return$distribution_ids_r
       )
 
+      # Load default set of distribution on application start
+      .values$distribution_manager$load_rv(
+        list(
+          list(
+            distributions = distributional::dist_normal(0, 1:5),
+            override = TRUE,
+            to = "active"
+          )
+        )
+      )
+
       inactive_return <- inactive_drop_zone_server(
         id = "inactive_drop_zone",
         .values = .values
