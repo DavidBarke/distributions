@@ -46,8 +46,7 @@ ui <- htmltools::tagList(
         body = bs4Dash::bs4DashBody(
             body_ui(
                 id = "body"
-            ),
-            shiny::actionButton(inputId = "test", label = "Test")
+            )
         ),
         footer = bs4Dash::bs4DashFooter(
             left = bin_drop_zone_ui(

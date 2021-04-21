@@ -130,7 +130,7 @@ distribution_manager_server <- function(id,
 
             shiny::insertUI(
               selector = selector,
-              where = "afterBegin",
+              where = "beforeEnd",
               immediate = TRUE,
               ui = distribution_box_ui(
                 id = ns("distribution" %_% (index + offset)),

@@ -10,19 +10,42 @@ modal_upload_ui <- function(id) {
       collapsible = FALSE,
       shiny::tabPanel(
         title = "Upload",
-        shiny::fileInput(
-          inputId = ns("file"),
-          label = "Select an RDS file",
-          accept = ".rds",
-          width = "100%"
+        shiny::selectInput(
+          inputId = ns("source"),
+          label = "Source",
+          choices = c("From .rds" = "user", "Predefined" = "predefined")
+        ),
+        shiny::conditionalPanel(
+          "input.source === 'user'",
+          shiny::fileInput(
+            inputId = ns("file"),
+            label = "Select an RDS file",
+            accept = ".rds",
+            width = "100%"
+          ),
+          ns = ns
+        ),
+        shiny::conditionalPanel(
+          "input.source === 'predefined'",
+          shiny::selectInput(
+            inputId = ns("predefined"),
+            label = "Select a predefined set of distributions",
+            choices = c(
+              "5 Normal Distributions" = "normal_5.rds",
+              "100 Normal Distributions" = "normal_100.rds"
+            )
+          ),
+          ns = ns
         ),
         shiny::uiOutput(
           outputId = ns("settings")
-        ),
+        )
       ),
       shiny::tabPanel(
         title = "Help",
-        htmltools::p("Help")
+        htmltools::includeMarkdown(
+          "md/upload_help.md"
+        )
       )
     ),
     footer = htmltools::tagList(
@@ -53,11 +76,17 @@ modal_upload_server <- function(id, .values) {
       })
 
       wrong_ext_r <- shiny::reactive({
+        if (input$source == "predefined") return(FALSE)
+
         ext_r() != "rds"
       })
 
       content_r <- shiny::reactive({
-        readr::read_rds(file_r()$datapath)
+        if (input$source == "user") {
+          readr::read_rds(file_r()$datapath)
+        } else {
+          readr::read_rds(file.path("examples", input$predefined))
+        }
       })
 
       wrong_content_r <- shiny::reactive({
