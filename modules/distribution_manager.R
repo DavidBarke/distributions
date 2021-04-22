@@ -103,23 +103,18 @@ distribution_manager_server <- function(id,
         msgs <- load_rv()
 
         purrr::walk(msgs, function(msg) {
+          selector <- if (msg$to == "active") .values$active_dz_id else
+            .values$inactive_dz_id
+
           if (msg$override) {
             shiny::removeUI(
-              selector = paste(.values$active_dz_id, "*"),
-              multiple = TRUE,
-              immediate = TRUE
-            )
-
-            shiny::removeUI(
-              selector = paste(.values$inactive_dz_id, "*"),
+              selector = paste(selector, "*"),
               multiple = TRUE,
               immediate = TRUE
             )
           }
 
           offset <- distribution_counter_rv()
-          selector <- if (msg$to == "active") .values$active_dz_id else
-            .values$inactive_dz_id
 
           purrr::iwalk(msg$distributions, function(distribution, index) {
             color <- if (hasName(distribution, "color")) {
@@ -153,6 +148,8 @@ distribution_manager_server <- function(id,
 
         .values$update_active_ids()
         .values$update_inactive_ids()
+
+        load_rv(NULL)
       })
 
       return_list <- list(

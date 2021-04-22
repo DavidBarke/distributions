@@ -159,8 +159,6 @@ modal_upload_server <- function(id, .values) {
             # override is FALSE unless active is not included, then override
             # is taken from settings. This is to prevent overriding when
             # after active distributions were loaded
-            override <- !settings_return$include_active_r() &&
-              settings_return$override_r()
 
             .values$distribution_manager$load_rv(
               c(
@@ -168,7 +166,7 @@ modal_upload_server <- function(id, .values) {
                 list(
                   list(
                     distributions = unname(formatted_content_r()$inactive),
-                    override = override,
+                    override = settings_return$override_r(),
                     to = "inactive"
                   )
                 )
