@@ -30,6 +30,10 @@ active_drop_zone_ui <- function(id) {
       htmltools::div(
         id = ns("dz")
       )
+    ) %>% append_card_tools_right(
+      remove_distributions_button_ui(
+        id = ns("remove_distributions_button")
+      )
     ) %>% first_child(),
     sortable::sortable_js(
       css_id = ns("dz"),
@@ -62,6 +66,12 @@ active_drop_zone_server <- function(id, .values) {
       distribution_ids_r <- shiny::reactive({
         input$distribution_ids %||% character()
       })
+
+      remove_distributions_button_server(
+        id = "remove_distributions_button",
+        .values = .values,
+        status = "active"
+      )
 
       return_list <- list(
         distribution_ids_r = distribution_ids_r
