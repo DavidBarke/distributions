@@ -116,24 +116,24 @@ distribution_manager_server <- function(id,
 
           offset <- distribution_counter_rv()
 
-          purrr::iwalk(msg$distributions, function(distribution, index) {
+          progress <- shiny::Progress$new(
+            min = 0,
+            max = length(msg$distributions)
+          )
+
+          progress$set(
+            value = 0,
+            message = paste("Load", msg$to, "distributions")
+          )
+
+          boxes <- purrr::imap(msg$distributions, function(distribution, index) {
+            progress$inc(1)
+
             color <- if (hasName(distribution, "color")) {
               distribution$color
             } else {
               color_scale((index + offset) %% scale_size)
             }
-
-            shiny::insertUI(
-              selector = selector,
-              where = "beforeEnd",
-              immediate = TRUE,
-              ui = distribution_box_ui(
-                id = ns("distribution" %_% (index + offset)),
-                color = color,
-                index = index + offset,
-                value = distribution
-              )
-            )
 
             envir$dist_return[[as.character(index + offset)]] <- distribution_box_server(
               id = "distribution" %_% (index + offset),
@@ -141,7 +141,23 @@ distribution_manager_server <- function(id,
               distribution_modifier_return = distribution_modifier_return,
               distribution_modifier_ui_proxy = distribution_modifier_ui_proxy
             )
+
+            distribution_box_ui(
+              id = ns("distribution" %_% (index + offset)),
+              color = color,
+              index = index + offset,
+              value = distribution
+            )
           })
+
+          progress$close()
+
+          shiny::insertUI(
+            selector = selector,
+            where = "beforeEnd",
+            immediate = TRUE,
+            ui = boxes
+          )
 
           distribution_counter_rv(offset + length(msg$distributions))
         })
