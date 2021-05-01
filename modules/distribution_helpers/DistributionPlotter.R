@@ -14,8 +14,10 @@ DistributionPlotter <- R6::R6Class(
 
       p <- plotly::plot_ly(type = "scatter", mode = "lines")
 
-      for (distribution in distributions) {
+      for (i in seq_along(distributions)) {
+        distribution <- distributions[[i]]
         p <- private$add_dist_trace(
+          id = i,
           p = p,
           distribution = distribution,
           type = type,
@@ -34,6 +36,7 @@ DistributionPlotter <- R6::R6Class(
     distribution_helper = NULL,
 
     add_dist_trace = function(p,
+                              id,
                               distribution,
                               type = c("d", "p", "q", "s", "h", "ch"),
                               limits = c(0, 10),
@@ -46,7 +49,12 @@ DistributionPlotter <- R6::R6Class(
 
       # Determine plotting positions on x axis
       x <- if (type == "q") {
-        seq(0, 1, length.out = n)
+        if (discrete) {
+          q <- private$get_discrete_x(distribution, min = 0, max = Inf)
+          distributional::cdf(distribution, q)
+        } else {
+          seq(0, 1, length.out = n)
+        }
       } else {
         private$get_trace_x(
           distribution = distribution,
@@ -63,15 +71,55 @@ DistributionPlotter <- R6::R6Class(
         type = type
       )
 
-      plotly::add_trace(
-        p,
-        x = x,
-        y = y,
-        color = I(distribution$color),
-        type = if (discrete) "bar" else "scatter",
-        mode = if (discrete) NULL else "lines",
-        name = private$distribution_helper$dist_to_trace_name(distribution)
-      )
+      if (type == "q" && discrete) {
+        name <-  private$distribution_helper$dist_to_trace_name(distribution)
+        color <- I(distribution$color)
+
+        p %>% plotly::add_segments(
+          x = c(0, x),
+          y = c(y, y[length(y)]),
+          xend = c(x, 1),
+          yend = c(y, y[length(y)]),
+          color = color,
+          name = name,
+          legendgroup = id,
+          hoverinfo = "skip"
+        ) %>% plotly::add_trace(
+          x = x,
+          y = y,
+          type = "scatter",
+          mode = "markers",
+          marker = list(
+            symbol = "circle-open"
+          ),
+          color = color,
+          showlegend = FALSE,
+          legendgroup = id,
+          name = name
+        ) %>% plotly::add_trace(
+          x = x,
+          y = c(y[-1], y[length(y)]),
+          type = "scatter",
+          mode = "markers",
+          marker = list(
+            symcol = "circle"
+          ),
+          color = color,
+          showlegend = FALSE,
+          legendgroup = id,
+          name = name
+        )
+      } else {
+        plotly::add_trace(
+          p,
+          x = x,
+          y = y,
+          color = I(distribution$color),
+          type = if (discrete) "bar" else "scatter",
+          mode = if (discrete) NULL else "lines",
+          name = private$distribution_helper$dist_to_trace_name(distribution)
+        )
+      }
     },
 
     add_layout = function(p, type, limits) {
@@ -103,6 +151,19 @@ DistributionPlotter <- R6::R6Class(
       )
     },
 
+    get_discrete_x = function(distribution, min, max, alpha = 1e-16) {
+      x_seq_start <- ceiling(min)
+
+      x_seq_end <- min(
+        floor(max),
+        quantile(distribution, 1 - alpha)
+      )
+
+      if (x_seq_start > x_seq_end) return(numeric())
+
+      x_seq_start:x_seq_end
+    },
+
     get_trace_x = function(distribution,
                            limits = c(0, 1),
                            support = c(-Inf, Inf),
@@ -114,15 +175,12 @@ DistributionPlotter <- R6::R6Class(
       x_seq_end <- min(limits[2], support[2])
 
       if (discrete) {
-        x_seq_start <- ceiling(x_seq_start)
-
-        x_seq_end <- min(
-          floor(x_seq_end),
-          quantile(distribution, 1 - alpha)
+        private$get_discrete_x(
+          distribution = distribution,
+          min = x_seq_start,
+          max = x_seq_end,
+          alpha = alpha
         )
-
-        if (x_seq_start > x_seq_end) return(numeric())
-        x_seq_start:x_seq_end
       } else {
         x_seq_start_max <- max(
           x_seq_start,
