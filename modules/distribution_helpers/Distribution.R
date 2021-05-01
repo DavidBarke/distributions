@@ -225,7 +225,6 @@ Distribution <- R6::R6Class(
       "Geometric" = "geometric",
       "Gumbel" = "gumbel",
       "Hypergeometric" = "hypergeometric",
-      "Logarithmic" = "logarithmic",
       "Logistic" = "logistic",
       "Negative Binomial" = "negbin",
       "Normal" = "normal",
@@ -248,7 +247,6 @@ Distribution <- R6::R6Class(
       "geometric" = "Geom",
       "gumbel" = "Gumb",
       "hypergeometric" = "Hyp",
-      "logarithmic" = "Loga",
       "logistic" = "Logi",
       "negbin" = "NB",
       "normal" = "N",
@@ -265,7 +263,6 @@ Distribution <- R6::R6Class(
       "binomial",
       "geometric",
       "hypergeometric",
-      "logarithmic",
       "negbin",
       "poisson"
     ),
@@ -324,7 +321,6 @@ Distribution <- R6::R6Class(
       geometric = distributional::dist_geometric,
       gumbel = distributional::dist_gumbel,
       hypergeometric = distributional::dist_hypergeometric,
-      logarithmic = distributional::dist_logarithmic,
       logistic = distributional::dist_logistic,
       negbin = distributional::dist_negative_binomial,
       normal = distributional::dist_normal,
@@ -380,9 +376,6 @@ Distribution <- R6::R6Class(
         "m" = "m",
         "n" = "n",
         "k" = "k"
-      ),
-      logarithmic = list(
-        "prob" = "p"
       ),
       logistic = list(
         "location" = "\u03BC",
