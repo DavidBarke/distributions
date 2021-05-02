@@ -77,6 +77,18 @@ Distribution <- R6::R6Class(
       x
     },
 
+    dists_to_statistics_tbl = function(distributions) {
+      tibble::tibble(distribution = distributions) %>%
+        dplyr::mutate(
+          name = distribution %>% purrr::map(self$dist_to_trace_name),
+          mean = mean(distribution),
+          variance = distributional::variance(distribution),
+          skewness = distributional::skewness(distribution),
+          kurtosis = distributional::kurtosis(distribution),
+          color = distribution %>% purrr::map("color")
+        )
+    },
+
     dist_to_support = function(distribution) {
       id <- self$dist_to_id(distribution)
       support_type <- private$support_type[[id]]

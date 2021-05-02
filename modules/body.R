@@ -42,24 +42,39 @@ body_ui <- function(id) {
       ),
       shiny::column(
         width = 6,
-        rintrojs::introBox(
-          data.step = 2,
-          data.intro = htmltools::tagList(
-            htmltools::p(
-              "For all active distributions the selected distribution function
+        bs4Dash::tabBox(
+          id = ns("results"),
+          width = NULL,
+          solidHeader = TRUE,
+          status = "primary",
+          shiny::tabPanel(
+            title = "Functions",
+            rintrojs::introBox(
+              data.step = 2,
+              data.intro = htmltools::tagList(
+                htmltools::p(
+                  "For all active distributions the selected distribution function
               is displayed here."
-            ),
-            htmltools::p(
-              "Special care is taken to ensure that distribution functions are
+                ),
+                htmltools::p(
+                  "Special care is taken to ensure that distribution functions are
               just evaluated at meaningful x positions. For example, discrete
               distributions are only evaluated at positive integers. Furthermore
               the support of each distribution is respected, that means an
               exponential distribution will not be evaluated at negative
               positions."
+                )
+              ),
+              plot_ui(
+                id = ns("plot")
+              )
             )
           ),
-          plot_ui(
-            id = ns("plot")
+          shiny::tabPanel(
+            title = "Statistics",
+            statistics_ui(
+              id = ns("statistics")
+            )
           )
         )
       )
@@ -105,6 +120,12 @@ body_server <- function(id, .values) {
 
       plot_server(
         id = "plot",
+        .values = .values,
+        distributions_r = .values$distribution_manager$active_distributions_r
+      )
+
+      statistics_server(
+        id = "statistics",
         .values = .values,
         distributions_r = .values$distribution_manager$active_distributions_r
       )
