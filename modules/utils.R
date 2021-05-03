@@ -8,6 +8,11 @@ first_child <- function(x) {
   x$children[[1]]
 }
 
+replace_na <- function(x, replacement = "NA") {
+  x[is.na(x)] <- replacement
+  x
+}
+
 is_distribution_or_null <- function(x) {
   is.null(x) || distributional::is_distribution(x)
 }
@@ -17,15 +22,6 @@ dist_func_row <- function(name, definition) {
     class = "dist-func-row",
     htmltools::div(name),
     htmltools::div(definition)
-  )
-}
-
-dist_stat_row <- function(name, discrete, continous) {
-  htmltools::div(
-    class = "dist-func-row",
-    htmltools::div(name),
-    htmltools::div(discrete),
-    htmltools::div(continous)
   )
 }
 

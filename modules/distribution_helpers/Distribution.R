@@ -78,14 +78,18 @@ Distribution <- R6::R6Class(
     },
 
     dists_to_statistics_tbl = function(distributions) {
-      tibble::tibble(distribution = distributions) %>%
+      skewness.dist_student_t <- function(x, ...) NA_real_
+      kurtosis.dist_student_t <- function(x, ...) NA_real_
+
+      tbl <- tibble::tibble(distribution = distributions) %>%
         dplyr::mutate(
           name = distribution %>% purrr::map(self$dist_to_trace_name),
           mean = mean(distribution),
           variance = distributional::variance(distribution),
           skewness = distributional::skewness(distribution),
           kurtosis = distributional::kurtosis(distribution),
-          color = distribution %>% purrr::map("color")
+          color = distribution %>% purrr::map("color"),
+          across(mean:kurtosis, replace_na)
         )
     },
 
