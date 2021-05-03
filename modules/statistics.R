@@ -101,7 +101,7 @@ statistics_server <- function(id, .values, distributions_r) {
             columnDefs = list(
               list(
                 targets = which(
-                  !names(statistics_r()) %in% input$statistics
+                  !names(statistics_r()) %in% c(input$statistics, "Name")
                 ) - 1,
                 visible = FALSE
               )
@@ -116,7 +116,10 @@ statistics_server <- function(id, .values, distributions_r) {
           target = "row",
           color = DT::styleValue()
         ) %>% DT::formatStyle(
-          columns = which(names(statistics_r()) %in% input$statistics)[1],
+          columns = c(
+            which(names(statistics_r()) %in% input$statistics)[1],
+            which(names(statistics_r()) == "Name")
+          ),
           color = DT::JS("'black'")
         )
       })
