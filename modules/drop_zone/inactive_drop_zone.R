@@ -85,10 +85,6 @@ inactive_drop_zone_server <- function(id, .values) {
       )
 
       return_list <- list(
-        distribution_ids_r = distribution_ids_r
-      )
-
-      return_list <- list(
         add_r = shiny::reactive(input$add),
         distribution_ids_r = distribution_ids_r
       )

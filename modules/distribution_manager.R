@@ -55,6 +55,7 @@ distribution_manager_server <- function(id,
         shiny::insertUI(
           selector = .values$inactive_dz_id,
           where = "afterBegin",
+          immediate = TRUE,
           ui = distribution_box_ui(
             id = ns("distribution" %_% index),
             color = color_scale(index %% scale_size),
@@ -71,6 +72,7 @@ distribution_manager_server <- function(id,
         )
 
         distribution_counter_rv(index)
+        .values$update_inactive_ids()
       }, priority = 1)
 
       active_distributions_r <- shiny::reactive({
