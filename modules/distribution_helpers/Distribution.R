@@ -89,6 +89,7 @@ Distribution <- R6::R6Class(
           skewness = distributional::skewness(distribution),
           kurtosis = distributional::kurtosis(distribution),
           color = distribution %>% purrr::map("color"),
+          across(mean:kurtosis, signif),
           across(mean:kurtosis, replace_na)
         )
     },
