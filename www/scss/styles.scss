@@ -5,12 +5,6 @@ $border-color: #ccc;
 $spacing: 5px;
 $primary: rgb(0, 123, 255);
 
-/* Height */
-.overflow-scroll .card-body {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
-}
-
 /* Fixed Navbar */
 
 .layout-navbar-fixed .main-header {
