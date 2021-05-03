@@ -20,6 +20,15 @@ dist_func_row <- function(name, definition) {
   )
 }
 
+dist_stat_row <- function(name, discrete, continous) {
+  htmltools::div(
+    class = "dist-func-row",
+    htmltools::div(name),
+    htmltools::div(discrete),
+    htmltools::div(continous)
+  )
+}
+
 text_color <- function(background_color) {
   background_rgb <- col2rgb(background_color)
 

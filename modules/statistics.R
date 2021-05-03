@@ -6,7 +6,45 @@ statistics_ui <- function(id) {
   htmltools::tagList(
     shiny::selectInput(
       inputId = ns("statistics"),
-      label = "Distribution Statistics",
+      label = htmltools::tagList(
+        "Distribution Statistics",
+        popover_2(
+          tag = shiny::actionLink(
+            inputId = ns("type_info"),
+            label = NULL,
+            icon = shiny::icon("info-circle")
+          ),
+          title = "Distribution Statistics",
+          content = htmltools::tagList(
+            dist_func_row(
+              htmltools::tags$b("Name"),
+              htmltools::tags$b("Definition")
+            ),
+            dist_func_row(
+              "Mean",
+              "$$\\mu := E(X)$$"
+            ),
+            dist_func_row(
+              "Variance",
+              "$$\\sigma^2 := E\\bigg( (X - \\mu)^2 \\bigg)$$"
+            ),
+            dist_func_row(
+              "Skewness",
+              "$$E\\Bigg[ \\bigg( \\frac{X - \\mu}{\\sigma} \\bigg)^3 \\Bigg]$$"
+            ),
+            dist_func_row(
+              "Kurtosis",
+              "$$E\\Bigg[ \\bigg( \\frac{X - \\mu}{\\sigma} \\bigg)^4 \\Bigg]$$"
+            )
+          ),
+          `data-template` = '
+          <div class="popover wide-popover" role="tooltip">
+            <div class="arrow"></div>
+            <h3 class="popover-header"></h3>
+            <div class="popover-body"></div>
+          </div>'
+        )
+      ),
       choices = choices,
       selected = choices,
       multiple = TRUE
@@ -23,6 +61,11 @@ statistics_server <- function(id, .values, distributions_r) {
     function(input, output, session) {
 
       ns <- session$ns
+
+      shiny::observeEvent(input$type_info, {
+        # Typeset MathJax for popover
+        session$sendCustomMessage("mathjax-typeset", TRUE)
+      })
 
       statistics_r <- shiny::reactive({
         if (is.null(distributions_r())) return(tibble::tibble(
