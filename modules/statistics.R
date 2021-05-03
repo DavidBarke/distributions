@@ -16,6 +16,14 @@ statistics_server <- function(id, .values, distributions_r) {
       ns <- session$ns
 
       statistics_r <- shiny::reactive({
+        if (is.null(distributions_r())) return(tibble::tibble(
+          Name = character(),
+          Mean = numeric(),
+          Variance = numeric(),
+          Skewness = numeric(),
+          Kurtosis = numeric()
+        ))
+
         tbl <- distribution_helper$dists_to_statistics_tbl(distributions_r()) %>%
           dplyr::select(
             Name = name,
@@ -26,30 +34,36 @@ statistics_server <- function(id, .values, distributions_r) {
             color
           ) %>%
           dplyr::mutate(
-            text_color = text_color(color)
+            text_color = text_color(color),
+            background_image = glue::glue("linear-gradient(to right, white, {bg} 80%, {bg})", bg = color)
           )
       })
 
       output$statistics <- DT::renderDataTable({
+        if (!nrow(statistics_r())) return(DT::datatable(statistics_r()))
+
         DT::datatable(
           statistics_r(),
           rownames = statistics_r()$Name,
           options = list(
             columnDefs = list(
               list(
-                targets = c(0, 5, 6),
+                targets = c(0, 5:7),
                 visible = FALSE
               )
             )
           )
         ) %>% DT::formatStyle(
-          columns = which(names(statistics_r()) == "color"),
+          columns = which(names(statistics_r()) == "background_image"),
           target = "row",
-          backgroundColor = DT::styleValue()
+          backgroundImage = DT::styleValue()
         ) %>% DT::formatStyle(
           columns = which(names(statistics_r()) == "text_color"),
           target = "row",
           color = DT::styleValue()
+        ) %>% DT::formatStyle(
+          columns = which(names(statistics_r()) == "Mean"),
+          color = DT::JS("'black'")
         )
       })
     }

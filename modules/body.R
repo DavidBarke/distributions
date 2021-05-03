@@ -45,7 +45,6 @@ body_ui <- function(id) {
         bs4Dash::tabBox(
           id = ns("results"),
           width = NULL,
-          solidHeader = TRUE,
           status = "primary",
           shiny::tabPanel(
             title = "Functions",
