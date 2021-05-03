@@ -4,7 +4,7 @@ distribution_input <- function(inputId, value) {
   distribution_params <- distribution_helper$dist_to_params(value)
   distribution_param_names <- distribution_helper$get_param_names(distribution_id)
 
-  param_bages <- purrr::map2(
+  param_badges <- purrr::map2(
     distribution_param_names, distribution_params,
     function(name, value) {
       htmltools::span(
@@ -39,7 +39,7 @@ distribution_input <- function(inputId, value) {
       ),
       htmltools::div(
         class = "flex distribution-params",
-        param_bages
+        param_badges
       )
     )
   )
