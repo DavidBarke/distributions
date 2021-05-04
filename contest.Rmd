@@ -1,0 +1,76 @@
+---
+output: github_document
+---
+
+# Distributions
+
+# App Title
+
+Distributions
+
+# Author
+
+David Barkemeyer
+
+# Username
+
+David_Barkemeyer
+
+# Keywords
+
+statistics, distributions, education, sortable, distributional
+
+# Category
+
+Education
+
+# URL of deployed app
+
+https://davidbarke.shinyapps.io/Distributions/
+
+# URL of source code
+
+https://github.com/DavidBarke/distributions
+
+# URL of RStudio Cloud project with app
+
+https://rstudio.cloud/project/2511990
+
+# Short Description
+
+A thorough understanding of statistical distributions is beneficial for most statistical methods. Users can examine and compare any number of statistical distributions. The current set of distributions can be saved and reloaded later.
+
+# Long Description
+
+## Overview
+
+I decided to re-tackle a task that I worked on a few years ago: comparing a set of statistical distributions. Visualizing a single distribution is pretty straightforward. However, for any set of distributions, one needs to provide a dynamic user interface and find a way to represent a set of distributions internally. Fortunately, earlier this year I discovered two great packages, {sortable} and {distributional}, that have helped me overcome the aforementioned challenges.
+
+## Distributions
+
+The lifecycle of a distribution starts in the *Inactive Distributions* box. In order to be evaluated or visualized, an inactive distribution must be dragged to the *Active Distributions* box. Distributions that are no longer needed can be dragged into the bin at the bottom of the page.
+
+A [distribution box](https://github.com/DavidBarke/distributions/blob/main/modules/distribution_box.R) consists of a color input, the distribution type and its parameters. Clicking on the distribution type or any of the parameters opens a modal dialog in which the user may choose the distribution type and set values for the parameters. All values are validated in order to prevent the user from submitting nonsensical values (e.g. numbers greater than 1 for a probability).
+
+## Distribution Functions
+
+The most common distribution functions of the active distributions may be visualized in a {plotly} plot. Special care is taken to provide meaningful visualizations for discrete as well as continuous distributions in the same plot. The axis limits and the plot resolution can be set by the user.
+
+## Distribution Statistics
+
+Distribution statistics like the mean and the variance can be summarised for all active distribution.
+
+## Upload and Download
+
+Especially for teaching, it is convenient to prepare a set of distributions and save them for later use. Therefore, the current set of active and inactive distributions can be saved as an `.rds` file. This file can either be uploaded in the application or imported in a local R session. Conversely, one can prepare a vector of distributions in a local R session and then upload it to the application. Accepted formats for distribution sets are described in the upload dialog.
+
+Furthermore, some predefined sets of distributions are available, so that all functionality can be easily tested. 
+
+
+
+
+
+
+
+
+
