@@ -20,6 +20,9 @@ body_ui <- function(id) {
             htmltools::p(
               "You can edit each distribution by clicking on either its type or
               one of its parameters."
+            ),
+            htmltools::p(
+              "Remove distributions by dragging them to the bin at the bottom of the page."
             )
           ),
           shiny::fluidRow(
@@ -42,37 +45,37 @@ body_ui <- function(id) {
       ),
       shiny::column(
         width = 6,
-        bs4Dash::tabBox(
-          id = ns("results"),
-          width = NULL,
-          status = "primary",
-          shiny::tabPanel(
-            title = "Functions",
-            rintrojs::introBox(
-              data.step = 2,
-              data.intro = htmltools::tagList(
-                htmltools::p(
-                  "For all active distributions the selected distribution function
-              is displayed here."
-                ),
-                htmltools::p(
-                  "Special care is taken to ensure that distribution functions are
+        rintrojs::introBox(
+          data.step = 2,
+          data.intro = htmltools::tagList(
+            htmltools::p(
+              "For all active distributions functions and statistics are
+              displayed here."
+            ),
+            htmltools::p(
+              "Special care is taken to ensure that distribution functions are
               just evaluated at meaningful x positions. For example, discrete
               distributions are only evaluated at positive integers. Furthermore
               the support of each distribution is respected, that means an
               exponential distribution will not be evaluated at negative
               positions."
-                )
-              ),
+            )
+          ),
+          bs4Dash::tabBox(
+            id = ns("results"),
+            width = NULL,
+            status = "primary",
+            shiny::tabPanel(
+              title = "Functions",
               plot_ui(
                 id = ns("plot")
               )
-            )
-          ),
-          shiny::tabPanel(
-            title = "Statistics",
-            statistics_ui(
-              id = ns("statistics")
+            ),
+            shiny::tabPanel(
+              title = "Statistics",
+              statistics_ui(
+                id = ns("statistics")
+              )
             )
           )
         )

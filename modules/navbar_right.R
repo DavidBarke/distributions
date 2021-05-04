@@ -48,7 +48,7 @@ navbar_right_ui <- function(id) {
           data.intro = htmltools::tagList(
             htmltools::p(
               "Alternatively you can prepare distributions in your R sessions
-              and upload them to this application for visualization. For more
+              and upload them to this application. For more
               details read the help text in the upload dialog."
             )
           )
