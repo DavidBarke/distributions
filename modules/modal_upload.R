@@ -32,7 +32,9 @@ modal_upload_ui <- function(id) {
             label = "Select a predefined set of distributions",
             choices = c(
               "5 Normal Distributions" = "normal_5.rds",
-              "100 Normal Distributions" = "normal_100.rds"
+              "100 Normal Distributions" = "normal_100.rds",
+              "1 Distribution of Every Type" = "all_types.rds",
+              "Approximations of the Normal Distribution" = "normal_approximations.rds"
             )
           ),
           ns = ns
@@ -143,6 +145,14 @@ modal_upload_server <- function(id, .values) {
         }
 
         if (content_type_r() == "distribution_list") {
+          if (!is.null(formatted_content_r()$min)) {
+            .values$set_plot_min(formatted_content_r()$min[[1]])
+          }
+
+          if (!is.null(formatted_content_r()$max)) {
+            .values$set_plot_max(formatted_content_r()$max[[1]])
+          }
+
           if (settings_return$include_active_r()) {
             .values$distribution_manager$load_rv(
               list(
@@ -203,7 +213,7 @@ is_valid_content <- function(x) {
 format_content <- function(x) {
   if (distributional::is_distribution(x)) return(x)
 
-  x[c("active", "inactive")]
+  x[c("active", "inactive", "min", "max")]
 }
 
 get_content_type <- function(x) {

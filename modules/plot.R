@@ -86,11 +86,15 @@ plot_server <- function(id, .values, distributions_r) {
         input$type
       })
 
+      .values$limits_r <- shiny::reactive({
+        x_limits_return$limits_r()
+      })
+
       output$plot <- plotly::renderPlotly({
         distribution_helper$plot_dists(
           distributions = distributions_r(),
           type_r(),
-          limits = x_limits_return$limits_r(),
+          limits = .values$limits_r(),
           n = n_x_return$n_r()
         )
       })

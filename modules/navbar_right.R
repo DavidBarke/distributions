@@ -78,7 +78,9 @@ navbar_right_server <- function(id, .values) {
       content_r <- shiny::reactive({
         list(
           active = .values$distribution_manager$active_distributions_r(),
-          inactive = .values$distribution_manager$inactive_distributions_r()
+          inactive = .values$distribution_manager$inactive_distributions_r(),
+          min = .values$limits_r()[1],
+          max = .values$limits_r()[2]
         )
       })
 

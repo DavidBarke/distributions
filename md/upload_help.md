@@ -31,10 +31,18 @@ distributions, you may store a list of distributions.
     )
     write_rds(x, "dist_list.rds")
 
-### Add color information
+##### Options
 
-If you want to control the color of a distribution, you can add a color
-field to a distribution on the same level as the distribution
+Further options can be set as fields on the top level (same level as
+`active` and `inactive`):
+
+-   `min`: Initial x axis left limit
+-   `max`: Initial x axis right limit
+
+#### Colors
+
+If you want to control the initial color of a distribution, you can add
+a color field to a distribution on the same level as the distribution
 parameters.
 
     x <- dist_normal(mu = 0, sigma = 1:5)

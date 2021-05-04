@@ -30,6 +30,22 @@ x_limits_server <- function(id, .values, type_r) {
 
       ns <- session$ns
 
+      .values$set_plot_min <- function(value) {
+        shiny::updateNumericInput(
+          inputId = "min",
+          value = value,
+          session = session
+        )
+      }
+
+      .values$set_plot_max <- function(value) {
+        shiny::updateNumericInput(
+          inputId = "max",
+          value = value,
+          session = session
+        )
+      }
+
       shiny::observeEvent(type_r(), {
         if (type_r() == "q") {
           if (input$min < 0) {
